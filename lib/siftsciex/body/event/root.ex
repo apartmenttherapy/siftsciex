@@ -1,6 +1,8 @@
 defmodule Siftsciex.Body.Event.Root do
   @moduledoc false
 
+  alias Siftsciex.Body
+
   defstruct "$type": :empty,
             "$api_key": Application.get_env(:siftsciex, :api_key),
             "$user_id": :empty,
@@ -8,14 +10,13 @@ defmodule Siftsciex.Body.Event.Root do
             "$session_id": :empty,
             "$status": :empty,
             "$ip": :empty
-  @type t :: %__MODULE__{"$type": payload_string,
+  @type t :: %__MODULE__{"$type": Body.payload_string,
                          "$api_key": String.t,
-                         "$user_id": payload_string,
-                         "$content_id": payload_string,
-                         "$session_id": payload_string,
-                         "$status": payload_string,
-                         "$ip": payload_string}
-  @type payload_string :: :empty | String.t
+                         "$user_id": Body.payload_string,
+                         "$content_id": Body.payload_string,
+                         "$session_id": Body.payload_string,
+                         "$status": Body.payload_string,
+                         "$ip": Body.payload_string}
 
   @doc """
   Builds a new body struct which is ready for the payload to be injected.
