@@ -1,26 +1,29 @@
 defmodule Siftsciex.Body.Event.Message do
   @moduledoc false
 
+  alias Siftsciex.Body
+  alias Siftsciex.Body.Event.Image
+
   defstruct "$body": :empty,
             "$contact_email": :empty,
             "$recipient_user_ids": [],
             "$root_content_id": :empty,
             "$images": []
-  @type t :: %__MODULE__{"$body": :empty | String.t,
-                         "$contact_email": :empty | String.t,
+  @type t :: %__MODULE__{"$body": Body.payload_string,
+                         "$contact_email": Body.payload_string,
                          "$recipient_user_ids": list,
-                         "$root_content_id": :empty | String.t,
-                         "$images": list}
+                         "$root_content_id": Body.payload_string,
+                         "$images": [Image.t]}
   @type message_data :: %{body: String.t,
                           contact_email: String.t,
                           recipient_ids: [String.t],
                           subject_id: String.t,
-                          images: [message_image]}
+                          images: [Image.data]}
                         | [body: String.t,
                            contact_email: String.t,
                            recipient_ids: [String.t],
                            subject_id: String.t,
-                           images: [message_image]]
+                           images: [Image.data]]
   @type message_image :: %{md5: String.t,
                            link: String.t,
                            description: String.t}
@@ -35,7 +38,7 @@ defmodule Siftsciex.Body.Event.Message do
   ## Examples
 
       iex> Message.new(%{body: "Hi", contact_email: "me@example.com", recipient_ids: ["you@example.com"], subject_id: "88354", images: [%{md5: "0", link: "https://example.com", description: "Image"}]})
-      %Message{"$body": "Hi", "$contact_email": "me@example.com", "$recipient_user_ids": ["you@example.com"], "$root_content_id": "88354", "$images": [%{"$md5_hash": "0", "$link": "https://example.com", "$description": "Image"}]}
+      %Message{"$body": "Hi", "$contact_email": "me@example.com", "$recipient_user_ids": ["you@example.com"], "$root_content_id": "88354", "$images": [%Image{"$md5_hash": "0", "$link": "https://example.com", "$description": "Image"}]}
 
       iex> Message.new([body: "Hi", contact_email: "me@example.com", recipient_ids: ["you@example.com"], subject_id: "88354", images: []])
       %Message{"$body": "Hi", "$contact_email": "me@example.com", "$recipient_user_ids": ["you@example.com"], "$root_content_id": "88354", "$images": []}
@@ -51,24 +54,17 @@ defmodule Siftsciex.Body.Event.Message do
   defp convert({:body, value}), do: {String.to_atom("$body"), value}
   defp convert({:contact_email, value}), do: {String.to_atom("$contact_email"), value}
   defp convert({:subject_id, value}), do: {String.to_atom("$root_content_id"), value}
-  defp convert({:images, values}), do: {String.to_atom("$images"), convert(values, [])}
+  defp convert({:images, values}) do
+    key = String.to_atom("$images")
+
+    {key, convert_images(values, [])}
+  end
   defp convert({:recipient_ids, value}) do
     {String.to_atom("$recipient_user_ids"), value}
   end
 
-  defp convert([], converted) do
-    converted
+  defp convert_images([], converted), do: converted
+  defp convert_images([image | rest], converted) do
+    convert_images(rest, [Image.new(image)] ++ converted)
   end
-  defp convert([image | rest], converted) do
-    remapped = Enum.reduce(image, %{}, fn part, remapped ->
-                 {key, value} = convert_image(part)
-                 Map.put(remapped, key, value)
-               end)
-
-    convert(rest, [remapped] ++ converted)
-  end
-
-  defp convert_image({:md5, value}), do: {String.to_atom("$md5_hash"), value}
-  defp convert_image({:link, value}), do: {String.to_atom("$link"), value}
-  defp convert_image({:description, value}), do: {String.to_atom("$description"), value}
 end
