@@ -5,16 +5,32 @@ defmodule Siftsciex.Body.Event.Address do
 
   alias Siftsciex.Body
 
-  defstruct "$name": :empty, "$phone": :empty, "$city": :empty, "$region": :empty, "$country": :empty, "$zipcode": :empty
-  @type t :: %__MODULE__{"$name": Base.payload_string,
-                         "$phone": Base.payload_string,
-                         "$city": Base.payload_string,
-                         "$region": Base.payload_string,
-                         "$country": Base.payload_string,
-                         "$zipcode": Base.payload_string}
+  defstruct "$name": :empty,
+            "$address_1": :empty,
+            "$address_2": :empty,
+            "$phone": :empty,
+            "$city": :empty,
+            "$region": :empty,
+            "$country": :empty,
+            "$zipcode": :empty
+  @type t :: %__MODULE__{"$name": Body.payload_string,
+                         "$address_1": Body.payload_string,
+                         "$address_2": Body.payload_string,
+                         "$phone": Body.payload_string,
+                         "$city": Body.payload_string,
+                         "$region": Body.payload_string,
+                         "$country": Body.payload_string,
+                         "$zipcode": Body.payload_string}
 
-  @type attributes :: :name | :phone | :city | :region | :country | :zipcode
-  @type data :: %{required(attributes) => String.t} # Maybe optional instead of required?
+  @type attributes :: :name
+                      | :address_1
+                      | :address_2
+                      | :phone
+                      | :city
+                      | :region
+                      | :country
+                      | :zipcode
+  @type data :: %{optional(attributes) => String.t}
 
   @doc """
   Creates a new `__MODULE__.t` struct from `__MODULE__.data`
@@ -37,6 +53,8 @@ defmodule Siftsciex.Body.Event.Address do
   end
 
   def normalize({:name, value}), do: {String.to_atom("$name"), value}
+  def normalize({:address_1, value}), do: {String.to_atom("$address_1"), value}
+  def normalize({:address_2, value}), do: {String.to_atom("$address_2"), value}
   def normalize({:phone, value}), do: {String.to_atom("$phone"), value}
   def normalize({:city, value}), do: {String.to_atom("$city"), value}
   def normalize({:region, value}), do: {String.to_atom("$region"), value}
