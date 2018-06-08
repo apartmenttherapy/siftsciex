@@ -21,6 +21,7 @@ defmodule Siftsciex.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:dialyxir, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:httpoison, ">= 0.0.0"}
     ]
   end
