@@ -12,11 +12,13 @@ defmodule Siftsciex.Body.Event.Item do
             "$currency_code": :empty,
             "$upc": :empty,
             "$sku": :empty,
+            "$isbn": :empty,
             "$brand": :empty,
             "$manufacturer": :empty,
             "$category": :empty,
             "$tags": [],
             "$color": :empty,
+            "$size": :empty,
             "$quantity": 1
   @type t :: %__MODULE__{"$item_id": Base.payload_string,
                          "$product_title": Base.payload_string,
@@ -24,21 +26,25 @@ defmodule Siftsciex.Body.Event.Item do
                          "$currency_code": Base.payload_string,
                          "$upc": Base.payload_string,
                          "$sku": Base.payload_string,
+                         "$isbn": Base.payload_string,
                          "$brand": Base.payload_string,
                          "$manufacturer": Base.payload_string,
                          "$category": Base.payload_string,
                          "$tags": [String.t],
                          "$color": Base.payload_string,
+                         "$size": Base.payload_string,
                          "$quantity": integer}
   @type string_keys :: :item_id
                        | :product_title
                        | :currency_code
                        | :upc
                        | :sku
+                       | :isbn
                        | :brand
                        | :manufacturer
                        | :category
                        | :color
+                       | :size
   @type int_keys :: :price | :quantity
   @type list_keys :: :tags
   @type data :: %{optional(string_keys) => String.t,
@@ -79,6 +85,7 @@ defmodule Siftsciex.Body.Event.Item do
   defp normalize({:currency_code, value}), do: {String.to_atom("$currency_code"), value}
   defp normalize({:upc, value}), do: {String.to_atom("$upc"), value}
   defp normalize({:sku, value}), do: {String.to_atom("$sku"), value}
+  defp normalize({:isbn, value}), do: {String.to_atom("$isbn"), value}
   defp normalize({:brand, value}), do: {String.to_atom("$brand"), value}
   defp normalize({:manufacturer, value}), do: {String.to_atom("$manufacturer"), value}
   defp normalize({:category, value}), do: {String.to_atom("$category"), value}
@@ -86,6 +93,7 @@ defmodule Siftsciex.Body.Event.Item do
   defp normalize({:quantity, value}), do: {String.to_atom("$quantity"), value}
   defp normalize({:tags, values}), do: {String.to_atom("$tags"), values}
   defp normalize({:price, value}), do: {String.to_atom("$price"), value}
+  defp normalize({:size, value}), do: {String.to_atom("$size"), value}
 
   defp convert_price(%{price: price} = data) do
     data
