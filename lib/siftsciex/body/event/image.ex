@@ -3,6 +3,8 @@ defmodule Siftsciex.Body.Event.Image do
   An image for Sift Science
   """
 
+  alias Siftsciex.Body
+
   defstruct "$md5_hash": :empty, "$link": :empty, "$description": :empty
   @type t :: %__MODULE__{"$md5_hash": Body.payload_string,
                          "$link": Body.payload_string,
