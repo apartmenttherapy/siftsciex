@@ -3,16 +3,5 @@ defmodule Siftsciex do
   Documentation for Siftsciex.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Siftsciex.hello
-      :world
-
-  """
-  def hello do
-    :world
-  end
+  def mark(key), do: String.to_atom("$#{key}")
 end
