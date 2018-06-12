@@ -74,19 +74,46 @@ defmodule Siftsciex.Body.Event.PaymentMethod do
   ## Parameters
 
     - `source`: The payment source (`__MODULE__.source`), this should be something like `:cash`, `:check` etc...
-    - `data`: The general data about the payment
+    - `data`: The general data about the payment, there are several available attributes
+      * `:payment_gateway`
+      * `:card_bin` - The first 6 digits of the card number
+      * `:card_last4`
+      * `:avs_result_code`
+      * `:cvv_result_code`
+      * `:verification_status`
+      * `:routing_number`
+      * `:decline_reason_code`
+      * `:paypal_payer_id`
+      * `:paypal_payer_email`
+      * `:paypal_payer_status`
+      * `:paypal_address_status`
+      * `:paypal_protection_eligibility`
+      * `:paypal_payment_status`
+      * `:stripe_cvc_check`
+      * `:stripe_address_line1_check`
+      * `:stripe_address_line2_check`
+      * `:stripe_address_zip_check`
+      * `:stripe_funding`
+      * `:stripe_brand`
 
   ## Examples
 
       iex> PaymentMethod.new(:credit_card, %{})
-      {:ok, %PaymentMethod{"$payment_type": :credit_card}}
+      {:ok, %PaymentMethod{"$payment_type": "$credit_card"}}
+
+      iex> PaymentMethod.new(:credit_card, %{payment_gateway: "stripe"})
+      {:ok, %PaymentMethod{"$payment_type": "$credit_card", "$payment_gateway": "$stripe"}}
 
       iex> PaymentMethod.new(:credit_card, %{payment_gateway: "bogus"})
       {:error, "Invalid Gateway"}
 
+      iex> PaymentMethod.new(:credit_card, %{payment_gateway: nil})
+      {:ok, %PaymentMethod{"$payment_type": "$credit_card"}}
+
   """
   @spec new(source, payment_data) :: {:ok, __MODULE__.t} | {:error, String.t}
   def new(source, %{payment_gateway: nil} = data) do
+    data = Map.delete(data, :payment_gateway)
     record = inject_and_process(source, data)
 
     {:ok, struct(%__MODULE__{}, record)}
@@ -115,7 +142,7 @@ defmodule Siftsciex.Body.Event.PaymentMethod do
   end
 
   defp normalize(data) when is_map(data), do: Enum.map(data, &normalize/1)
-  defp normalize({:payment_type, value}), do: {mark(:payment_type), value}
+  defp normalize({:payment_type, value}), do: {mark(:payment_type), mark_string(value)}
   defp normalize({:card_bin, value}), do: {mark(:card_bin), value}
   defp normalize({:card_last4, value}), do: {mark(:card_last4), value}
   defp normalize({:avs_result_code, value}), do: {mark(:avs_result_code), value}
@@ -147,5 +174,7 @@ defmodule Siftsciex.Body.Event.PaymentMethod do
   end
   defp normalize({:stripe_funding, value}), do: {mark(:stripe_funding), value}
   defp normalize({:stripe_brand, value}), do: {mark(:stripe_brand), value}
-  defp normalize({:payment_gateway, value}), do: {mark(:payment_gateway), value}
+  defp normalize({:payment_gateway, value}) do
+    {mark(:payment_gateway), mark_string(value)}
+  end
 end
