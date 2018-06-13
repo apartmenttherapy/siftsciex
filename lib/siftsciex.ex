@@ -8,4 +8,7 @@ defmodule Siftsciex do
 
   @doc false
   def mark_string(value), do: "$#{value}"
+
+  @doc false
+  def api_key, do: Application.get_env(:siftsciex, :api_key)
 end
