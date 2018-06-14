@@ -8,7 +8,7 @@ defmodule Siftsciex.Event.Content do
   alias Siftsciex.Event.Payload.{Comment, Listing, Message, Post, Profile, Review}
 
   defstruct "$type": :empty,
-            "$api_key": :empty,
+            "$api_key": Application.get_env(:siftsciex, :api_key),
             "$user_id": :empty,
             "$content_id": :empty,
             "$account_type": :empty,
@@ -22,7 +22,7 @@ defmodule Siftsciex.Event.Content do
             "$profile": :empty,
             "$review": :empty
   @type t :: %__MODULE__{"$type": Payload.payload_string,
-                         "$api_key": Payload.payload_string,
+                         "$api_key": String.t,
                          "$user_id": Payload.payload_string,
                          "$content_id": Payload.payload_string,
                          "$account_type": Payload.payload_string,
@@ -63,13 +63,13 @@ defmodule Siftsciex.Event.Content do
   """
   @spec create_listing(listing_data) :: __MODULE__.t
   def create_listing(data) do
-    defaults()
+    create()
     |> struct("$listing": Listing.new(data.listing()))
     |> populate_context(data)
   end
 
-  defp defaults do
-    %__MODULE__{"$type": "$create_content", "$api_key": api_key()}
+  defp create do
+    %__MODULE__{"$type": "$create_content"}
   end
 
   defp populate_context(record, %{user_id: user, content_id: content} = data) do
