@@ -25,7 +25,8 @@ defmodule Siftsciex.MixProject do
     [
       {:dialyxir, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:excoveralls, ">= 0.0.0", only: [:dev, :test]},
-      {:httpoison, ">= 0.0.0"}
+      {:httpoison, ">= 0.0.0"},
+      {:poison, ">= 0.0.0"}
     ]
   end
 end
