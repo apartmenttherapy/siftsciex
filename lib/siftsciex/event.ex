@@ -86,7 +86,7 @@ defmodule Siftsciex.Event do
   @spec create_message(map) :: result
   def create_message(data) do
     data
-    |> Message.create_message()
+    |> Content.create_message()
     |> purge_empty()
     |> post()
   end
