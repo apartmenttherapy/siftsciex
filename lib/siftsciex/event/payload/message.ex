@@ -53,7 +53,7 @@ defmodule Siftsciex.Event.Payload.Message do
   end
 
   defp convert({:body, value}), do: {String.to_atom("$body"), value}
-  defp convert({:root_content_id, value}), do: {String.to_atom("$root_content_id", value)}
+  defp convert({:root_content_id, value}), do: {String.to_atom("$root_content_id"), value}
   defp convert({:contact_email, value}), do: {String.to_atom("$contact_email"), value}
   defp convert({:subject_id, value}), do: {String.to_atom("$root_content_id"), value}
   defp convert({:images, values}) do
