@@ -17,6 +17,7 @@ defmodule Siftsciex.Event.Payload.Message do
   @type message_data :: %{body: String.t,
                           contact_email: String.t,
                           recipient_ids: [String.t],
+                          root_content_id: String.t,
                           subject_id: String.t,
                           images: [Image.data]}
                         | [body: String.t,
@@ -52,6 +53,7 @@ defmodule Siftsciex.Event.Payload.Message do
   end
 
   defp convert({:body, value}), do: {String.to_atom("$body"), value}
+  defp convert({:root_content_id, value}), do: {String.to_aom("$root_content_id", value)}
   defp convert({:contact_email, value}), do: {String.to_atom("$contact_email"), value}
   defp convert({:subject_id, value}), do: {String.to_atom("$root_content_id"), value}
   defp convert({:images, values}) do
