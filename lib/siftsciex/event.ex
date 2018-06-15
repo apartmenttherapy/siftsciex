@@ -70,6 +70,27 @@ defmodule Siftsciex.Event do
     |> post()
   end
 
+  @doc """
+  Register a `$create_content`.`$message` Event with Sift Science
+
+  ## Parameters
+
+    - `data`: The message data that should be sent to Sift Science
+
+  ## Examples
+
+      iex> Event.create_message(%{content_id: "9f2ebfb3-7dbb-456c-b263-d985f107de07", message: %{body: "Hello"}})
+      {:ok, %Siftsciex.Event.Response{}}
+
+  """
+  @spec create_message(map) :: result
+  def create_message(data) do
+    data
+    |> Message.create_message()
+    |> purge_empty()
+    |> post()
+  end
+
   defp post(payload) do
     payload
     |> Transport.post()
