@@ -113,17 +113,23 @@ defmodule Siftsciex.Event do
     |> Map.from_struct()
     |> purge_empty()
   end
+  def purge_empty(record) when is_list(record) do
+    record
+    |> Enum.reduce([], fn element, collection ->
+         case element do
+           :empty -> collection
+           e when is_binary(e) -> [e] ++ collection
+           e -> [purge_empty(e)] ++ collection
+         end
+       end)
+  end
   def purge_empty(record) do
     Enum.reduce(record, %{}, fn {key, value}, stripped ->
       case value do
         %{} = value ->
           Map.put(stripped, key, purge_empty(value))
         value when is_list(value) ->
-          values =
-            value
-            |> Enum.map(&purge_empty/1)
-
-          Map.put(stripped, key, values)
+          Map.put(stripped, key, purge_empty(value))
         :empty ->
           stripped
         value ->
