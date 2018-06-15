@@ -4,13 +4,17 @@ defmodule Siftsciex.MixProject do
   def project do
     [
       app: :siftsciex,
+      name: "Siftsciex",
       version: "0.1.0",
       elixir: "~> 1.6",
       elixirc_paths: elixirc_paths(Mix.env),
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [coveralls: :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test],
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      dialyzer: [plt_add_deps: :transitive, ignore_warnings: "dialyzer.ignore-warnings"],
+      deps: deps(),
+      source_url: "https://github.com/apartmenttherapy.com/siftsciex",
+      docs: [extras: ["README.md"]]
     ]
   end
 
@@ -30,6 +34,7 @@ defmodule Siftsciex.MixProject do
     [
       {:dialyxir, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:excoveralls, ">= 0.0.0", only: [:dev, :test]},
+      {:ex_doc, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:httpoison, ">= 0.0.0"},
       {:poison, ">= 0.0.0"}
     ]
