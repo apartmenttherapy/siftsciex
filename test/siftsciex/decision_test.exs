@@ -1,7 +1,7 @@
-defmodule Siftsciex.Response.DecisionTest do
+defmodule Siftsciex.DecisionTest do
   use ExUnit.Case
 
-  alias Siftsciex.Response.Decision
+  alias Siftsciex.Decision
 
   test "new/1 builds a valid decision" do
     seconds = 1528813580

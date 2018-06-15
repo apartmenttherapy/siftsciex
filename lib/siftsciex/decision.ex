@@ -1,6 +1,8 @@
-defmodule Siftsciex.Response.Decision do
+defmodule Siftsciex.Decision do
   @moduledoc """
+  The Decision module defines an internal structure for the data Sift Science sends in their Webhook payload.
 
+  This data indicates that an action should be taken on the given "entity".  Webhooks are triggered either by conditions in one of your Workflows or manual actions taken in Sift Science by humans in your organization (reviewer actions).
   """
 
   defstruct [:entity, :decision, :time]
@@ -14,7 +16,7 @@ defmodule Siftsciex.Response.Decision do
                  "content" => :content}
 
   @doc """
-  Creates a new `__MODULE__.t` struct from the given map (parsed JSON)
+  Creates a new `t:Siftsciex.Decision.t/0` struct from the given map (parsed JSON)
 
   ## Parameters
 
