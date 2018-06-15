@@ -15,7 +15,7 @@ defmodule Siftsciex.Event.Payload.CreditPoint do
                   credit_point_type: String.t}
 
   @doc """
-  Creates a new `__MODULE__.t` struct for us in an Event payload.
+  Creates a new `t:Siftsciex.Event.Payload.CreditPoint.t/0` struct for us in an Event payload.
 
   ## Parameters
 

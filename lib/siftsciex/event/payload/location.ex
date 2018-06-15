@@ -15,11 +15,11 @@ defmodule Siftsciex.Event.Payload.Location do
   @type data :: %{optional(attribute) => String.t}
 
   @doc """
-  Creates a new `__MODULE__.t` struct for use in a Sift Science Event
+  Creates a new `t:Siftsciex.Event.Payload.Location.t/0` struct for use in a Sift Science Event
 
   ## Parameters
 
-    - `data`: The location data (`__MODULE__.data`)
+    - `data`: The location data (`t:Siftsciex.Event.Payload.Location.data/0`)
 
   ## Examples
 

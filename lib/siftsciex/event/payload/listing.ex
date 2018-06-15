@@ -35,7 +35,7 @@ defmodule Siftsciex.Event.Payload.Listing do
 
   ## Parameters
 
-    - `listing`: The data for the listing (`__MODULE__.data`)
+    - `listing`: The data for the listing (`t:Siftsciex.Event.Payload.Listing.data/0`)
 
   ## Examples
 

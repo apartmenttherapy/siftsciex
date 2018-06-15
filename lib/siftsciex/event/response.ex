@@ -45,7 +45,7 @@ defmodule Siftsciex.Event.Response do
 
   ## Parameters
 
-    - `response`: The `__MODULE__.t` struct to check
+    - `response`: The `t:Siftsciex.Event.Response.t/0` struct to check
 
   ## Examples
 

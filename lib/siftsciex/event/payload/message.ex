@@ -33,7 +33,7 @@ defmodule Siftsciex.Event.Payload.Message do
 
   ## Parameters
 
-    - `data`: The data that should be provided to Sift Science for the message (`__MODULE__.message_data`)
+    - `data`: The data that should be provided to Sift Science for the message (`t:Siftsciex.Event.Payload.Message.message_data/0`)
 
   ## Examples
 

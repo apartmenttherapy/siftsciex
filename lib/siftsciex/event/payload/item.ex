@@ -52,13 +52,13 @@ defmodule Siftsciex.Event.Payload.Item do
                   optional(list_keys) => [String.t]}
 
   @doc """
-  Creates a `__MODULE__.t` struct for a Sift Science Event payload.
+  Creates a `t:Siftsciex.Event.Payload.Item.t/0` struct for a Sift Science Event payload.
 
   When creating a new `Item` the price will be converted based on the `:currency` config.  For example if your currency config is set to `:base` and you are using "USD" then a price of 500 (5 dollars) will be converted to `5000000`, this is because Sift Science expects the micros value relative to the base unit for the currency.  This conversion is handled automatically for you.
 
   ## Parameters
 
-    - `data`: The item details to be sent to Sift Science (`__MODULE__.data`)
+    - `data`: The item details to be sent to Sift Science (`t:Siftsciex.Event.Payload.Item.data/0`)
 
   ## Examples
 

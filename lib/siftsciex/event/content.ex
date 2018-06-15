@@ -35,25 +35,29 @@ defmodule Siftsciex.Event.Content do
                          "$post": :empty | Post.t,
                          "$profile": :empty | Profile.t,
                          "$review": :empty | Review.t}
-  @type req_listing_key :: :user_id | :content_id
-  @type opt_listing_key :: :session_id | :ip
+  @type req_key :: :user_id | :content_id
+  @type opt_key :: :session_id | :ip
   @type status :: :draft
                   | :pending
                   | :active
                   | :paused
                   | :deleted_by_user
                   | :deleted_by_company
-  @type listing_data :: %{required(req_listing_key) => String.t,
+  @type listing_data :: %{required(req_key) => String.t,
                           required(:listing) => Listing.data,
                           optional(:status) => status,
-                          optional(opt_listing_key) => String.t}
+                          optional(opt_key) => String.t}
+  @type message_data :: %{required(req_key) => Strign.t,
+                          required(:message) => Message.data,
+                          optional(:status) => status,
+                          optional(opt_key) => String.t}
 
   @doc """
   Constructs a `$create_content`.`$listing` Event for Sift Science
 
   ## Parameters
 
-    - `data`: The listing data (`__MODULE__.listing_data`)
+    - `data`: The listing data (`t:Siftsciex.Event.Content.listing_data/0`)
 
   ## Examples
 
@@ -70,6 +74,26 @@ defmodule Siftsciex.Event.Content do
 
   defp create do
     %__MODULE__{"$type": "$create_content"}
+  end
+
+  @doc """
+  Constructs a `$create_content`.`$message` Event for Sift Science
+
+  ## Parameters
+
+    - `data`: The message data (`t:Siftsciex.Event.Content.message_data/0`)
+
+  ## Examples
+
+      iex> Content.create_message(%{user_id: "bob", content_id: "8", message: %{body: "Hi", recipient_ids: ["sue"]}})
+      %Content{"$type": "$create_content", "$api_key": "test_key", "$user_id": "bob", "$content_id": "8", "$message": %Siftsciex.Event.Payload.Message{"$body": "Hi", "$recipient_user_ids": ["sue"]}}
+
+  """
+  @spec create_message(message_data) :: __MODULE__.t
+  def create_message(data) do
+    create()
+    |> struct("$message": Message.new(data.message()))
+    |> populate_context(data)
   end
 
   defp populate_context(record, %{user_id: user, content_id: content} = data) do

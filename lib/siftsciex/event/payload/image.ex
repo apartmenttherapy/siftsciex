@@ -15,11 +15,11 @@ defmodule Siftsciex.Event.Payload.Image do
                   description: String.t}
 
   @doc """
-  Creates a new `__MODULE__.t` struct for use in an Event Payload.
+  Creates a new `t:Siftsciex.Event.Payload.Image.t/0` struct for use in an Event Payload.
 
   ## Parameters
 
-    - `data`: The image data, this should be in the form of a `__MODULE__.image_data` map
+    - `data`: The image data, this should be in the form of a `t:Siftsciex.Event.Payload.Image.data/0` map
 
   ## Examples
 

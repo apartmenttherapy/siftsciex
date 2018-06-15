@@ -33,11 +33,11 @@ defmodule Siftsciex.Event.Payload.Address do
   @type data :: %{optional(attributes) => String.t}
 
   @doc """
-  Creates a new `__MODULE__.t` struct from `__MODULE__.data`
+  Creates a new `t:Siftsciex.Event.Payload.Address.t/0` struct from `t:Siftsciex.Event.Payload.Address.data/0`
 
   ## Parameters
 
-    - `data`: The data for the address (`__MODULE__.data`)
+    - `data`: The data for the address (`t:Siftsciex.Event.Payload.Address.data/0`)
 
   ## Examples
 
