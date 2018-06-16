@@ -79,7 +79,7 @@ defmodule Siftsciex.Event do
 
   ## Examples
 
-      iex> Event.create_message(%{content_id: "9f2ebfb3-7dbb-456c-b263-d985f107de07", message: %{body: "Hello"}})
+      iex> Event.create_message(%{user_id: "auth0|bob", content_id: "9f2ebfb3-7dbb-456c-b263-d985f107de07", message: %{body: "Hello"}})
       {:ok, %Siftsciex.Event.Response{}}
 
   """

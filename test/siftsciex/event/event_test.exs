@@ -4,7 +4,7 @@ defmodule Siftsciex.EventTest do
   alias Siftsciex.Event
   alias Siftsciex.Event.Response
 
-  doctest Event, except: [create_account: 1, create_listing: 1]
+  doctest Event, except: [create_account: 1, create_listing: 1, create_message: 1]
 
   test "create_account/1 sends a $create_account Event to Sift Science" do
     assert {:ok, %Response{}} = Event.create_account(account_data())
@@ -12,6 +12,10 @@ defmodule Siftsciex.EventTest do
 
   test "create_listing/1 sends a $create_content -> $listing Event to Sift Science" do
     assert {:ok, %Response{}} = Event.create_listing(listing_data())
+  end
+
+  test "create_message/1 sends a $create_content -> $message Event to Sift Science" do
+    assert {:ok, %Response{}} = Event.create_message(message_data())
   end
 
   def account_data, do: %{user_id: "bob", user_email: "bob@example.com"}
@@ -26,5 +30,11 @@ defmodule Siftsciex.EventTest do
         listed_items: [%{item_id: "8", price: 3, currency_code: "USD"}]
       }
     }
+  end
+
+  def message_data do
+    %{user_id: "bob",
+      content_id: "9f2ebfb3-7dbb-456c-b263-d985f107de07",
+      message: %{body: "Hello"}}
   end
 end
