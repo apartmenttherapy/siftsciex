@@ -3,6 +3,8 @@ defmodule Siftsciex.Event.Response do
   Module for handling a Sift Science Event response
   """
 
+  alias Siftsciex.Event.Response.Error
+
   defstruct status: :empty, message: :empty, time: :empty, request: :empty
   @type t :: %__MODULE__{status: Payload.payload_int,
                          message: Payload.payload_string,
@@ -62,5 +64,23 @@ defmodule Siftsciex.Event.Response do
       0 -> false
       _ -> true
     end
+  end
+
+  @doc """
+  Returns the error type (`t:Siftsciex.Event.Response.Error.value/0`) of the response if the response indicates an error.
+
+  ## Parameters
+
+    - `response`: The respnonse object to check the error for.
+
+  ## Examples
+
+      iex> Response.error(%Response{status: 51})
+      :invalid_api_key
+
+  """
+  @spec error(__MODULE__.t) :: Error.value
+  def error(response) do
+    Error.error(response)
   end
 end
