@@ -50,6 +50,27 @@ defmodule Siftsciex.Event do
   end
 
   @doc """
+  Reports an `$update_content`.`$listing` event to Sift Science
+
+  ## Parameters
+
+    - `data`: The data for the updated listing
+
+  ## Examples
+
+      iex> Event.create_listing(%{user_id: "bob", content_id: "8", status: :draft, listing: %{subject: "Chair", contact_address: %{name: "Walt", city: "Albuquerque"}, listed_items: [%{item_id: "8", price: 3, currency_code: "USD"}]}})
+      {:ok, %Siftsciex.Event.Response{}}
+
+  """
+  @spec update_listing(map) :: result
+  def update_listing(data) do
+    data
+    |> Content.update_listing()
+    |> purge_empty()
+    |> post()
+  end
+
+  @doc """
   Register a `$create_account` Event with Sift Science
 
   ## Parameters
@@ -66,6 +87,27 @@ defmodule Siftsciex.Event do
   def create_account(data) do
     data
     |> Account.create_account()
+    |> purge_empty()
+    |> post()
+  end
+
+  @doc """
+  Register an `$update_account` Event with Sift Science
+
+  ## Parameters
+
+    - `data`: The account data that has been updated
+
+  ## Examples
+
+      iex> Event.update_account(%{user_id: "bob", user_email: "bob2@example.com"})
+      {:ok, %Siftsciex.Event.Response{}}
+
+  """
+  @spec update_account(map) :: result
+  def update_account(data) do
+    data
+    |> Account.update_account()
     |> purge_empty()
     |> post()
   end

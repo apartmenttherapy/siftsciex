@@ -72,8 +72,24 @@ defmodule Siftsciex.Event.Content do
     |> populate_context(data)
   end
 
-  defp create do
-    %__MODULE__{"$type": "$create_content"}
+  @doc """
+  Constructs a `$update_content`.`$listing` Event for Sift Science
+
+  ## Parameters
+
+    - `data`: The listing data (`t:Siftsciex.Event.Content.listing_data/0`)
+
+  ## Examples
+
+      iex> Content.update_listing(%{user_id: "bob", content_id: "8", status: :draft, listing: %{subject: "Chair", contact_address: %{name: "Walt", city: "Albuquerque"}, listed_items: [%{item_id: "8", price: 3, currency_code: "USD"}]}})
+      %Content{"$type": "$update_content", "$api_key": "test_key", "$user_id": "bob", "$content_id": "8", "$status": "$draft", "$listing": %Siftsciex.Event.Payload.Listing{"$subject": "Chair", "$contact_address": %Siftsciex.Event.Payload.Address{"$name": "Walt", "$city": "Albuquerque"}, "$listed_items": [%Siftsciex.Event.Payload.Item{"$item_id": "8", "$price": 3000000, "$currency_code": "USD", "$quantity": 1}]}}
+
+  """
+  @spec update_listing(listing_data) :: __MODULE__.t
+  def update_listing(data) do
+    update()
+    |> struct("$listing": Listing.new(data.listing()))
+    |> populate_context(data)
   end
 
   @doc """
@@ -94,6 +110,34 @@ defmodule Siftsciex.Event.Content do
     create()
     |> struct("$message": Message.new(data.message()))
     |> populate_context(data)
+  end
+
+  @doc """
+  Constructs an `$update_content`.`$message` Event for Sift Science
+
+  ## Parameters
+
+    - `data`: The message data (`t:Siftsciex.Event.Content.message_data/0`)
+
+  ## Examples
+
+      iex> Content.update_message(%{user_id: "bob", content_id: "8", message: %{body: "Hi", recipient_ids: ["sue"]}})
+      %Content{"$type": "$update_content", "$api_key": "test_key", "$user_id": "bob", "$content_id": "8", "$message": %Siftsciex.Event.Payload.Message{"$body": "Hi", "$recipient_user_ids": ["sue"]}}
+
+  """
+  @spec update_message(message_data) :: __MODULE__.t
+  def update_message(data) do
+    update()
+    |> struct("$message": Message.new(data.message()))
+    |> populate_context(data)
+  end
+
+  defp create do
+    %__MODULE__{"$type": "$create_content"}
+  end
+
+  defp update do
+    %__MODULE__{"$type": "$update_content"}
   end
 
   defp populate_context(record, %{user_id: user, content_id: content} = data) do
