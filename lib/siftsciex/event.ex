@@ -133,6 +133,27 @@ defmodule Siftsciex.Event do
     |> post()
   end
 
+  @doc """
+  Register an `$update_content`.`$message` Event with Sift Science
+
+  ## Parameters
+
+    - `data`: The message data that should be sent
+
+  ## Examples
+
+      iex> Event.update_message(%{user_id: "auth0|bob", content_id: "9f2ebfb3-7dbb-456c-b263-d985f107de07", message: %{body: "Bye"}})
+      {:ok, %Siftsciex.Event.Response{}}
+
+  """
+  @spec update_message(map) :: result
+  def update_message(data) do
+    data
+    |> Content.update_message()
+    |> purge_empty()
+    |> post()
+  end
+
   defp post(payload) do
     payload
     |> Transport.post()
