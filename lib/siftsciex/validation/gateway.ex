@@ -3,7 +3,7 @@ defmodule Siftsciex.Validation.Gateway do
   Payments are typically processed by Gateways, this module manages the list of "known" gateways and provides simple logic for checking if a value is a supported Gateway.
   """
 
-  @gateways MapSet.new([
+  @gateways [
     "acapture",
     "adyen",
     "affirm",
@@ -236,7 +236,7 @@ defmodule Siftsciex.Validation.Gateway do
     "yandex_money",
     "zipmoney",
     "zooz_paymentsos"
-  ])
+  ]
 
   @doc """
   Checks to see if the given Gateway is "known"/"supported"
@@ -256,6 +256,8 @@ defmodule Siftsciex.Validation.Gateway do
   """
   @spec supported?(String.t) :: boolean
   def supported?(gateway) do
-    MapSet.member?(@gateways, gateway)
+    MapSet.member?(gateways(), gateway)
   end
+
+  defp gateways, do: MapSet.new(@gateways)
 end
