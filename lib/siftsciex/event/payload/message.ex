@@ -20,11 +20,6 @@ defmodule Siftsciex.Event.Payload.Message do
                   root_content_id: String.t,
                   subject_id: String.t,
                   images: [Image.data]}
-                | [body: String.t,
-                   contact_email: String.t,
-                   recipient_ids: [String.t],
-                   subject_id: String.t,
-                   images: [Image.data]]
   @type message_image :: %{md5: String.t,
                            link: String.t,
                            description: String.t}
