@@ -83,7 +83,32 @@ defmodule Siftsciex.Event.Account do
     |> struct(normalized)
   end
 
+  @doc """
+  Creates a new `$update_account` Event for Sift Science, this handles everything for the payload except the `$api_key`
+
+  ## Parameters
+
+    - `account_data`: The data for the account that was updated (`t:Siftsciex.Event.Account.data/0`)
+
+  ## Examples
+
+      iex> Account.update_account(%{user_id: "bob", user_email: "bob@example.com"})
+      %Account{"$user_email": "bob@example.com", "$user_id": "bob", "$type": "$update_account"}
+
+      iex> Account.update_account(%{user_id: "bob", payment_methods: [%{payment_type: :cash}]})
+      %Account{"$user_id": "bob", "$type": "$update_account", "$payment_methods": [%PaymentMethod{"$payment_type": "$cash"}]}
+
+  """
+  @spec update_account(data) :: __MODULE__.t
+  def update_account(account_data) do
+    normalized = Enum.map(account_data, &normalize/1)
+
+    update()
+    |> struct(normalized)
+  end
+
   defp create, do: %__MODULE__{"$type": "$create_account"}
+  defp update, do: %__MODULE__{"$type": "$update_account"}
 
   defp normalize({:user_email, value}), do: {mark(:user_email), value}
   defp normalize({:user_id, value}), do: {mark(:user_id), value}
