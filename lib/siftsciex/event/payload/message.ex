@@ -14,12 +14,12 @@ defmodule Siftsciex.Event.Payload.Message do
                          "$recipient_user_ids": list,
                          "$root_content_id": Payload.payload_string,
                          "$images": [Image.t]}
-  @type data :: %{body: String.t,
-                  contact_email: String.t,
-                  recipient_ids: [String.t],
-                  root_content_id: String.t,
-                  subject_id: String.t,
-                  images: [Image.data]}
+  @type data :: %{required(:body) => String.t,
+                  optional(:contact_email) => String.t,
+                  required(:recipient_ids) => [String.t],
+                  required(:root_content_id) => String.t,
+                  required(:subject_id) => String.t,
+                  optional(:images) => [Image.data]}
   @type message_image :: %{md5: String.t,
                            link: String.t,
                            description: String.t}
