@@ -18,8 +18,8 @@ defmodule Siftsciex.Event.Payload.Discount do
                          "$minimum_purchase_amount": Payload.payload_int}
   @type numeric :: integer | float
   @type numeric_key :: :percentage_off | :amount | :minimum_purchase_amount
-  @type discount_args :: %{optional(:currency_code) => String.t,
-                           optional(numeric_key) => numeric}
+  @type data :: %{optional(:currency_code) => String.t,
+                  optional(numeric_key) => numeric}
 
   @doc """
   Create a new `Discount` type for a Sift Science Event payload.
@@ -41,7 +41,7 @@ defmodule Siftsciex.Event.Payload.Discount do
       %Discount{"$percentage_off": 0.1, "$currency_code": "USD", "$amount": 100000000, "$minimum_purchase_amount": 50000000}
 
   """
-  @spec new(discount_args) :: __MODULE__.t
+  @spec new(data) :: __MODULE__.t
   def new(data) do
     normalized =
       data

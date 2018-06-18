@@ -191,7 +191,7 @@ defmodule Siftsciex.Event do
       %{"$type": "$create_content", "$listing": %{"$listed_items": [%{"$price": 5000000}]}}
 
   """
-  @spec purge_empty(map) :: map
+  @spec purge_empty(map | list) :: map
   def purge_empty(%_{} = record) do
     record
     |> Map.from_struct()

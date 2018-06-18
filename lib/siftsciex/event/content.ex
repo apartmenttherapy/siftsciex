@@ -5,6 +5,7 @@ defmodule Siftsciex.Event.Content do
 
   import Siftsciex
 
+  alias Siftsciex.Event.Payload
   alias Siftsciex.Event.Payload.{Comment, Listing, Message, Post, Profile, Review}
 
   defstruct "$type": :empty,
@@ -15,12 +16,8 @@ defmodule Siftsciex.Event.Content do
             "$session_id": :empty,
             "$status": :empty,
             "$ip": :empty,
-            "$comment": :empty,
             "$listing": :empty,
-            "$message": :empty,
-            "$post": :empty,
-            "$profile": :empty,
-            "$review": :empty
+            "$message": :empty
   @type t :: %__MODULE__{"$type": Payload.payload_string,
                          "$api_key": String.t,
                          "$user_id": Payload.payload_string,
@@ -29,12 +26,8 @@ defmodule Siftsciex.Event.Content do
                          "$session_id": Payload.payload_string,
                          "$status": Payload.payload_string,
                          "$ip": Payload.payload_string,
-                         "$comment": :empty | Comment.t,
                          "$listing": :empty | Listing.t,
-                         "$message": :empty | Message.t,
-                         "$post": :empty | Post.t,
-                         "$profile": :empty | Profile.t,
-                         "$review": :empty | Review.t}
+                         "$message": :empty | Message.t}
   @type req_key :: :user_id | :content_id
   @type opt_key :: :session_id | :ip
   @type status :: :draft
@@ -47,7 +40,7 @@ defmodule Siftsciex.Event.Content do
                           required(:listing) => Listing.data,
                           optional(:status) => status,
                           optional(opt_key) => String.t}
-  @type message_data :: %{required(req_key) => Strign.t,
+  @type message_data :: %{required(req_key) => String.t,
                           required(:message) => Message.data,
                           optional(:status) => status,
                           optional(opt_key) => String.t}

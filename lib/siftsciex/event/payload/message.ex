@@ -14,17 +14,17 @@ defmodule Siftsciex.Event.Payload.Message do
                          "$recipient_user_ids": list,
                          "$root_content_id": Payload.payload_string,
                          "$images": [Image.t]}
-  @type message_data :: %{body: String.t,
-                          contact_email: String.t,
-                          recipient_ids: [String.t],
-                          root_content_id: String.t,
-                          subject_id: String.t,
-                          images: [Image.data]}
-                        | [body: String.t,
-                           contact_email: String.t,
-                           recipient_ids: [String.t],
-                           subject_id: String.t,
-                           images: [Image.data]]
+  @type data :: %{body: String.t,
+                  contact_email: String.t,
+                  recipient_ids: [String.t],
+                  root_content_id: String.t,
+                  subject_id: String.t,
+                  images: [Image.data]}
+                | [body: String.t,
+                   contact_email: String.t,
+                   recipient_ids: [String.t],
+                   subject_id: String.t,
+                   images: [Image.data]]
   @type message_image :: %{md5: String.t,
                            link: String.t,
                            description: String.t}
@@ -45,7 +45,7 @@ defmodule Siftsciex.Event.Payload.Message do
       %Message{"$body": "Hi", "$contact_email": "me@example.com", "$recipient_user_ids": ["you@example.com"], "$root_content_id": "88354", "$images": []}
 
   """
-  @spec new(message_data) :: __MODULE__.t
+  @spec new(data) :: __MODULE__.t
   def new(data) do
     mapped = Enum.map(data, &convert/1)
 

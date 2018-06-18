@@ -3,6 +3,7 @@ defmodule Siftsciex.Event.Response do
   Module for handling a Sift Science Event response
   """
 
+  alias Siftsciex.Event.Payload
   alias Siftsciex.Event.Response.Error
 
   defstruct status: :empty, message: :empty, time: :empty, request: :empty

@@ -1,9 +1,8 @@
 defmodule Siftsciex.Event.Transport do
   @moduledoc false
 
-  @type result :: :ok
-                  | {:error, :transport_error}
-                  | {:error, :server_error}
+  @type result :: {:ok, HTTPoison.Response.t}
+                  | {:error, HTTPoison.Error.t}
 
   @doc false
   @spec post(map) :: result
