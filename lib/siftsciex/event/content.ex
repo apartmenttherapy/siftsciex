@@ -42,8 +42,8 @@ defmodule Siftsciex.Event.Content do
                           optional(opt_key) => String.t}
   @type message_data :: %{required(req_key) => String.t,
                           required(:message) => Message.data,
-                          optional(:status) => status,
-                          optional(opt_key) => String.t}
+                          optional(opt_key) => String.t
+                          optional(:status) => status}
 
   @doc """
   Constructs a `$create_content`.`$listing` Event for Sift Science
