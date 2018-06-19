@@ -15,19 +15,20 @@ defmodule Siftsciex.Currency do
 
   ## Examples
 
-      iex> Currency.as_micros(8, "USD") # [usd: &(&1 * 100)]
+      iex> Currency.as_micros(8, "USD")
       8000000
 
-      iex> Currency.as_micros(8, :usd) # [usd: &(&1 * 100)]
+      iex> Currency.as_micros(8, :usd)
       8000000
 
-      iex> Currency.as_micros(800, :unknown) # [default: &(&1)]
+      iex> Currency.as_micros(800, :unknown)
       8000000
 
   """
   @spec as_micros(integer, String.t | atom) :: integer
   def as_micros(amount, type \\ :default) do
-    base = base_converter(type).(amount)
+    {mod, fun} = base_converter(type)
+    base = Kernel.apply(mod, fun, [amount])
 
     base * 10_000
   end
@@ -45,11 +46,15 @@ defmodule Siftsciex.Currency do
     |> case do
          nil ->
            Logger.info("Unconfigured currency type received (#{Kernel.inspect(type)})")
-           converters[:default] || &(&1)
+           converters[:default] || {__MODULE__, :default}
          fun ->
            fun
        end
   end
 
   defp factors, do: Application.get_env(:siftsciex, :currency_factors)
+
+  @doc false
+  @spec default(integer | float) :: integer | float
+  def default(value), do: value
 end
