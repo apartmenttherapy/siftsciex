@@ -28,6 +28,7 @@ defmodule Siftsciex.Event.Payload.Listing do
                   optional(:contact_address) => Address.data,
                   optional(:locations) => [Address.data],
                   optional(:listed_items) => [Item.data],
+                  optional(:images) => [Image.data],
                   optional(:expiration_time) => Payload.payload_int | DateTime.t}
 
   @doc """
