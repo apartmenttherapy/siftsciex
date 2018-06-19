@@ -42,7 +42,7 @@ defmodule Siftsciex.Event.Content do
                           optional(opt_key) => String.t}
   @type message_data :: %{required(req_key) => String.t,
                           required(:message) => Message.data,
-                          optional(opt_key) => String.t
+                          optional(opt_key) => String.t,
                           optional(:status) => status}
 
   @doc """
