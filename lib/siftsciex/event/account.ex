@@ -116,6 +116,7 @@ defmodule Siftsciex.Event.Account do
   defp normalize({:phone, value}), do: {mark(:phone), value}
   defp normalize({:referrer_user_id, value}), do: {mark(:referrer_user_id), value}
   defp normalize({:promotions, value}), do: {mark(:promotions), Promotion.new(value)}
+  defp normalize({:social_sign_on_type, value}), do: {mark(:social_sign_on_type), value}
   defp normalize({:payment_methods, value}) do
     {mark(:payment_methods), PaymentMethod.new(value)}
   end
