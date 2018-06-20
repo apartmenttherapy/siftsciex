@@ -3,6 +3,8 @@ defmodule Siftsciex.Event.Response do
   Module for handling a Sift Science Event response
   """
 
+  require Logger
+
   alias Siftsciex.Event.Payload
   alias Siftsciex.Event.Response.Error
 
@@ -27,9 +29,15 @@ defmodule Siftsciex.Event.Response do
   """
   @spec process(String.t) :: __MODULE__.t
   def process(body) when is_binary(body) do
-    {:ok, response} = Poison.decode(body)
-
-    process(response)
+    body
+    |> Poison.decode()
+    |> case do
+         {:ok, response} ->
+           process(response)
+         {:error, reason} ->
+           Logger.error("Failed to parse (#{Kernel.inspect(reason)}) Sift Science response: #{body}")
+           %__MODULE__{}
+       end
   end
   def process(body) do
     {:ok, time} = DateTime.from_unix(body["time"])
