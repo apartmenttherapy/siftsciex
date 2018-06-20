@@ -16,6 +16,7 @@ defmodule Siftsciex.Event.Response.Error do
                  | :invalid_api_version
                  | :invalid_reserved_field
                  | :none
+                 | :unknown
 
   @error_map %{
     -4 => :unavailable,
@@ -48,6 +49,12 @@ defmodule Siftsciex.Event.Response.Error do
   """
   @spec error(Response.t) :: value
   def error(response) do
-    Map.get(@error_map, response.status(), :none)
+    response.status()
+    |> case do
+         :empty ->
+           :unknown
+         status ->
+           Map.get(@error_map, response.status(), :none)
+       end
   end
 end
