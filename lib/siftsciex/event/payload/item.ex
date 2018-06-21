@@ -1,6 +1,6 @@
 defmodule Siftsciex.Event.Payload.Item do
-  @moduledocc """
-
+  @moduledoc """
+  An item for a Sift Event
   """
 
   alias Siftsciex.Event.Payload

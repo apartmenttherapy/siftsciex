@@ -1,6 +1,6 @@
 defmodule Siftsciex.Event.Payload.Discount do
   @moduledoc """
-
+  A discount for a Sift Event
   """
 
   import Siftsciex

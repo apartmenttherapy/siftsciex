@@ -1,4 +1,6 @@
 defmodule Siftsciex.Event.Payload do
+  @moduledoc false
+
   @type payload_string :: :empty | String.t
   @type payload_time :: :empty | DateTime.t
   @type payload_int :: :empty | integer

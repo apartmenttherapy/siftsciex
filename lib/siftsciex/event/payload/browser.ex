@@ -1,6 +1,6 @@
 defmodule Siftsciex.Event.Payload.Browser do
   @moduledoc """
-
+  Represents a browser object in a Sift Event payload
   """
 
   alias Siftsciex.Event.Payload

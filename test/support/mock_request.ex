@@ -1,4 +1,6 @@
 defmodule Siftsciex.Support.MockRequest do
+  @moduledoc false
+
   def post(_, %{"$user_id": "transport_error"} = data) do
     {:error, %{reason: "Timeout"}}
   end

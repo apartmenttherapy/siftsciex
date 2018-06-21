@@ -7,7 +7,7 @@ defmodule Siftsciex.Event.Payload.CreditPoint do
 
   alias Siftsciex.Event.Payload
 
-  @enforce_keys [:"$amount",:"$credit_point_type"]
+  @enforce_keys [:"$amount", :"$credit_point_type"]
   defstruct "$amount": :empty, "$credit_point_type": :empty
   @type t :: %__MODULE__{"$amount": Payload.payload_int,
                          "$credit_point_type": Payload.payload_string}

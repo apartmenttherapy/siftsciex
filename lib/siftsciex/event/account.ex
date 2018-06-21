@@ -1,6 +1,13 @@
 defmodule Siftsciex.Event.Account do
   @moduledoc """
+  Functions for managing Account related events in Sift Science
 
+  This module provides functions for registering Account related events with Sift Science there are two reserved events relating to accounts for Sift Science.  This module supports both those events:
+
+    * `create_account`
+    * `update_account`
+
+  They are fairly self-explanatory, this module provides functions that abstract away the full round trip.  To use the functions in this module you will need to map your internal account representation to match the `t:Siftsciex.Event.Account.data/0` structure, the only required key is `user_id` although the more data you can provide the better your results will be.
   """
 
   import Siftsciex
