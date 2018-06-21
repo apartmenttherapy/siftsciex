@@ -27,23 +27,26 @@ defmodule Siftsciex.Score.Response do
 
   ## Examples
 
-      iex> Response.process("{\\"status\\":0,\\"error_message\\":\\"OK\\",\\"user_id\\":\\"bob\\",\\"scores\\":[{\\"payment_abuse\\":{\\"score\\":0.3}}]}")
+      iex> Response.process("{\\"status\\":0,\\"error_message\\":\\"OK\\",\\"user_id\\":\\"bob\\",\\"scores\\":{\\"payment_abuse\\":{\\"score\\":0.3}}}")
       %Response{status: 0, error_message: "OK", user_id: "bob", scores: [%Siftsciex.Score.Response.Score{type: :payment_abuse, score: 0.3}]}
 
   """
-  @spec process(String.t) :: __MODULE__.t
-  def process(body) do
+  @spec process(String.t | map) :: __MODULE__.t
+  def process(body) when is_binary(body) do
     body
     |> Poison.decode(keys: :atoms)
     |> case do
          {:ok, response} ->
-           __MODULE__
-           |> struct(response)
-           |> convert_nested()
+           process(response)
          {:error, reason} ->
            Logger.error("Invalid (#{reason}) JSON response from Sift Science: #{body}")
            %__MODULE__{}
        end
+  end
+  def process(body) do
+    __MODULE__
+    |> struct(body)
+    |> convert_nested()
   end
 
   defp convert_nested(record) do

@@ -7,12 +7,14 @@ defmodule Siftsciex.Event.Response do
 
   alias Siftsciex.Event.Payload
   alias Siftsciex.Event.Response.Error
+  alias Siftsciex.Score.Response, as: ScoreResponse
 
-  defstruct status: :empty, message: :empty, time: :empty, request: :empty
+  defstruct status: :empty, message: :empty, time: :empty, request: :empty, score_response: :empty
   @type t :: %__MODULE__{status: Payload.payload_int,
                          message: Payload.payload_string,
                          time: :empty | DateTime.t,
-                         request: Payload.payload_string}
+                         request: Payload.payload_string,
+                         score_response: :empty | ScoreResponse.t}
 
   @doc """
   Processes the respose from Sift Science
@@ -24,7 +26,7 @@ defmodule Siftsciex.Event.Response do
   ## Examples
 
       iex> Response.process(%{"status" => 0, "error_message" => "OK", "time" => time, "request" => ""})
-      %Response{status: 0, message: "OK", time: date_time, request: ""}
+      %Response{status: 0, message: "OK", time: date_time, request: "", score_response: :empty}
 
   """
   @spec process(String.t) :: __MODULE__.t
@@ -49,6 +51,14 @@ defmodule Siftsciex.Event.Response do
          time: time,
          request: body["request"]
        ])
+    |> process_score(Map.get(body, "score_response"))
+  end
+
+  defp process_score(record, nil), do: record
+  defp process_score(record, score) do
+    {:ok, json} = Poison.encode(score)
+
+    struct(record, score_response: ScoreResponse.process(json))
   end
 
   @doc """

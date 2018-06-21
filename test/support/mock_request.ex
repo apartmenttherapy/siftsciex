@@ -32,18 +32,16 @@ defmodule Siftsciex.Support.MockRequest do
       "status": 0,
       "error_message": "OK",
       "user_id": "bob",
-      "scores": [
-        {
-          "payment_abuse": {
-            "score": 0.4,
-            "reasons": [
-              {
-                "name": "Dirty"
-              }
-            ]
-          }
+      "scores": {
+        "payment_abuse": {
+          "score": 0.4,
+          "reasons": [
+            {
+              "name": "Dirty"
+            }
+          ]
         }
-      ]
+      }
     }
     """
   end
