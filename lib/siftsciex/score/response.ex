@@ -34,7 +34,7 @@ defmodule Siftsciex.Score.Response do
   @spec process(String.t) :: __MODULE__.t
   def process(body) do
     body
-    |> Poison.decode(keys: :atoms!)
+    |> Poison.decode(keys: :atoms)
     |> case do
          {:ok, response} ->
            __MODULE__
@@ -53,11 +53,17 @@ defmodule Siftsciex.Score.Response do
   end
 
   defp convert_scores(record, :empty), do: record
+  defp convert_scores(record, scores) when map_size(scores) == 0 do
+    struct(record, scores: :empty)
+  end
   defp convert_scores(record, scores) do
     struct(record, scores: Score.new(scores))
   end
 
   defp convert_labels(record, :empty), do: record
+  defp convert_labels(record, labels) when map_size(labels) == 0 do
+    struct(record, latest_labels: :empty)
+  end
   defp convert_labels(record, labels) do
     struct(record, latest_labels: Label.new(labels))
   end
