@@ -20,7 +20,33 @@ defmodule Siftsciex.Support.MockRequest do
     {:ok, %{status_code: 200, body: response}}
   end
 
+  def get(url) do
+    {:ok, %{status_code: 200, body: score_response}}
+  end
+
+  defp score_response do
+    """
+    {
+      "status": 0,
+      "error_message": "OK",
+      "user_id": "bob",
+      "scores": [
+        {
+          "payment_abuse": {
+            "score": 0.4,
+            "reasons": [
+              {
+                "name": "Dirty"
+              }
+            ]
+          }
+        }
+      ]
+    }
+    """
+  end
+
   def known_time do
-    1529011047
+    1_529_011_047
   end
 end
