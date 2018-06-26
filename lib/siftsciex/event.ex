@@ -1,6 +1,31 @@
 defmodule Siftsciex.Event do
   @moduledoc """
   The Event module is used for registering events with SiftScience.
+
+  Events are the crux of what Sift Science does, they represent user activity in your application.  Things like creating a listing, or message as well as initiating a payment or signing up are all Events.  Sift Science analyzes the data sent with the Events to build a Risk Score indicating how likely it is that that user is an honest agent.
+
+  When delivering Event data you can request an immediate (synchronous) risk score or you can simply deliver the data then either check the Risk score independently or setup Workflows in Sift Science which can deliver Score results to a Webhook in your application if specific criteria are met.
+
+  Currently `Siftsciex` supports the following Events:
+
+    * `create_account`
+    * `create_listing`
+    * `create_message`
+    * `update_account`
+    * `update_listing`
+    * `update_message`
+
+  The `Event` functions all return a `t:Siftsciex.Event.result/0` tuple.  The first element in the tuple is an atom indicative of the HTTP transport result.  `:ok` means that the HTTP delivery was successful (2xx HTTP response).  In the case of an `:ok` as the first element the second element will be a `t:Siftsciex.Event.Response.t/0` struct.
+
+  There are several different `:error` possibilities, the following are possible HTTP level errors when it comes to `Siftsciex`:
+
+    * `:redirected`
+    * `:client_error`
+    * `:server_error`
+    * `:transport_error`
+
+  In the case of an `:error` response the second element in the tuple will be one of the above and there will be a third element providing a bit more information about the specific error.
+
   """
 
   require Logger

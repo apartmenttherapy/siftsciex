@@ -1,6 +1,12 @@
 defmodule Siftsciex.Score do
   @moduledoc """
-  Functions for interacting with the Sift Science `Score` API
+  Functions for interacting with the Sift Science `Score` API.
+
+  Risk Scores are why you are using Sift Science in the first place.  Sift Science provides an API to get Risk Scores for users on demand.  This module provides functions for doing just that.
+
+  You will also find the `t:Siftsciex.Score.Response.t/0` struct defined in this namespace.  In the case of a successful HTTP request to the Score `API` the functions here will return a tuple with a `t:Siftsciex.Score.Response.t/0` struct as the second element.
+
+  *NOTE*: If a synchronous request is made to the Events API then a `t:Siftsciex.Score.Response.t/0` struct will be embedded in the resulting `t:Siftsciex.Event.Response.t/0` struct.
   """
 
   require Logger
