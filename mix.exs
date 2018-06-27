@@ -5,6 +5,8 @@ defmodule Siftsciex.MixProject do
     [
       app: :siftsciex,
       name: "Siftsciex",
+      description: description(),
+      package: package(),
       version: "0.3.0",
       elixir: "~> 1.6",
       elixirc_paths: elixirc_paths(Mix.env),
@@ -38,6 +40,19 @@ defmodule Siftsciex.MixProject do
       {:ex_doc, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:httpoison, ">= 0.0.0"},
       {:poison, ">= 0.0.0"}
+    ]
+  end
+
+  defp description do
+    "An Elixir Library for interacting with Sift Science's REST API"
+  end
+
+  defp package do
+    [
+      licenses: ["LGPLv3"],
+      maintainers: ["Glen Holcomb"],
+      links: %{"GitHub" => "https://github.com/apartmenttherapy/siftsciex"},
+      source_url: "https://github.com/apartmenttherapy/siftsciex"
     ]
   end
 end
