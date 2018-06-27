@@ -44,12 +44,11 @@ Sift Science has a very specific format for all the Events they consume (other t
 
 ### Scores
 
-Scores represent the level of Risk a user represents in several different categories.  There are technically 5 risk categories and then the legacy risk score.  The 5 risk categories are:
+Scores represent the level of Risk a user represents in several different categories.  There are technically 4 risk categories and then the legacy risk score.  The 4 risk categories are:
 
   * `payment_abuse`
   * `account_abuse`
   * `content_abuse`
   * `promotion_abuse`
-  * `account_takeover`
 
 When making a query to the Score API you can indicate which of these scores you wish returned for the user.  There is some other metadata that comes across with a Score you can read more about that [here](https://siftscience.com/developers/docs/curl/score-api/synchronous-scores).  A Score can be requested independently at any time or it can be requested in the response to reporting an Event.
