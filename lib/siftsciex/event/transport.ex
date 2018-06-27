@@ -5,11 +5,17 @@ defmodule Siftsciex.Event.Transport do
                   | {:error, HTTPoison.Error.t}
 
   @doc false
-  @spec post(map) :: result
-  def post(payload) do
+  @spec post(map, [] | Keyword.t) :: result
+  def post(payload, []) do
     {:ok, json} = Poison.encode(payload)
 
     transporter().post(url(), json)
+  end
+  def post(payload, [scores: scores]) do
+    {:ok, json} = Poison.encode(payload)
+    query = "?return_score=true&abuse_types=#{Enum.join(scores, ",")}"
+
+    transporter().post(url() <> query, json)
   end
 
   defp transporter do

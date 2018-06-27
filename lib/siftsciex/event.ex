@@ -26,13 +26,19 @@ defmodule Siftsciex.Event do
 
   In the case of an `:error` response the second element in the tuple will be one of the above and there will be a third element providing a bit more information about the specific error.
 
+  ### Options
+
+  All the functions in this module accept an optional `opts` argument which can be used to indicate that the given Event shuld be synchronous and the specified abuse scores should be returned.
+
+  If provided options should have one key `:scores` with a list of `t:Siftsciex.Score.abuse_type/0` values indicating which scores should be returned in the response to the Event report.
+
   """
 
   require Logger
 
   alias Siftsciex.Event.{Account, Content, Response, Transport}
+  alias Siftsciex.Score
 
-  defstruct "$type": :empty, "$api_key": :empty, "$user_id": :empty, "$content_id": :empty, "$session_id": :empty, "$status": :empty, "$ip": :empty
   @type error_map :: %{required(String.t) => String.t}
   @type result :: {:ok, Response.t}
                   | {:error, :redirected, String.t}
@@ -45,20 +51,8 @@ defmodule Siftsciex.Event do
 
   ## Parameters
 
-    - `data`: The data for the newly created listing
-      * `:subject`
-      * `:body`
-      * `:contact_email`
-      * `:contact_address`
-      * `:locations`
-      * `:listed_items`
-      * `:images`
-      * `:expiration_time`
-      * `:ip`
-      * `:status`
-      * `:session_id`
-      * `:content_id`
-      * `:user_id`
+    - `data`: The data for the newly created listing see `t:Siftsciex.Event.Content.listing_data/0` for details on the keys expected.
+    - `opts`: See the Options section in the module description.
 
   ## Examples
 
@@ -66,12 +60,12 @@ defmodule Siftsciex.Event do
       {:ok, %Siftsciex.Event.Response{}}
 
   """
-  @spec create_listing(map) :: result
-  def create_listing(data) do
+  @spec create_listing(map, Keyword.t) :: result
+  def create_listing(data, opts \\ []) do
     data
     |> Content.create_listing()
     |> purge_empty()
-    |> post()
+    |> post(opts)
   end
 
   @doc """
@@ -80,6 +74,7 @@ defmodule Siftsciex.Event do
   ## Parameters
 
     - `data`: The data for the updated listing
+    - `opts`: See the Options section in the module description.
 
   ## Examples
 
@@ -87,12 +82,12 @@ defmodule Siftsciex.Event do
       {:ok, %Siftsciex.Event.Response{}}
 
   """
-  @spec update_listing(map) :: result
-  def update_listing(data) do
+  @spec update_listing(map, Keyword.t) :: result
+  def update_listing(data, opts \\ []) do
     data
     |> Content.update_listing()
     |> purge_empty()
-    |> post()
+    |> post(opts)
   end
 
   @doc """
@@ -101,6 +96,7 @@ defmodule Siftsciex.Event do
   ## Parameters
 
     - `data`: The account data that should be sent to Sift Science
+    - `opts`: See the Options section in the module description.
 
   ## Examples
 
@@ -108,12 +104,12 @@ defmodule Siftsciex.Event do
       {:ok, %Siftsciex.Event.Response{}}
 
   """
-  @spec create_account(map) :: result
-  def create_account(data) do
+  @spec create_account(map, Keyword.t) :: result
+  def create_account(data, opts \\ []) do
     data
     |> Account.create_account()
     |> purge_empty()
-    |> post()
+    |> post(opts)
   end
 
   @doc """
@@ -122,6 +118,7 @@ defmodule Siftsciex.Event do
   ## Parameters
 
     - `data`: The account data that has been updated
+    - `opts`: See the Options section in the module description.
 
   ## Examples
 
@@ -129,12 +126,12 @@ defmodule Siftsciex.Event do
       {:ok, %Siftsciex.Event.Response{}}
 
   """
-  @spec update_account(map) :: result
-  def update_account(data) do
+  @spec update_account(map, Keyword.t) :: result
+  def update_account(data, opts \\ []) do
     data
     |> Account.update_account()
     |> purge_empty()
-    |> post()
+    |> post(opts)
   end
 
   @doc """
@@ -143,6 +140,7 @@ defmodule Siftsciex.Event do
   ## Parameters
 
     - `data`: The message data that should be sent to Sift Science
+    - `opts`: See the Options section in the module description.
 
   ## Examples
 
@@ -150,12 +148,12 @@ defmodule Siftsciex.Event do
       {:ok, %Siftsciex.Event.Response{}}
 
   """
-  @spec create_message(map) :: result
-  def create_message(data) do
+  @spec create_message(map, Keyword.t) :: result
+  def create_message(data, opts \\ []) do
     data
     |> Content.create_message()
     |> purge_empty()
-    |> post()
+    |> post(opts)
   end
 
   @doc """
@@ -164,6 +162,7 @@ defmodule Siftsciex.Event do
   ## Parameters
 
     - `data`: The message data that should be sent
+    - `opts`: See the Options section in the module description.
 
   ## Examples
 
@@ -171,30 +170,34 @@ defmodule Siftsciex.Event do
       {:ok, %Siftsciex.Event.Response{}}
 
   """
-  @spec update_message(map) :: result
-  def update_message(data) do
+  @spec update_message(map, Keyword.t) :: result
+  def update_message(data, opts \\ []) do
     data
     |> Content.update_message()
     |> purge_empty()
-    |> post()
+    |> post(opts)
   end
 
-  defp post(payload) do
+  defp post(payload, opts) do
     payload
-    |> Transport.post()
-    |> case do
-         {:ok, %{status_code: 200} = response} ->
-           {:ok, Response.process(response.body())}
-         {:ok, %{status_code: status} = response} when status >= 300 and status <= 399 ->
-           {:error, :redirected, response.headers["Location"]}
-         {:ok, %{status_code: status}} when status >= 400 and status <= 499 ->
-           Logger.error("Failed to Post Event, received 4xx response for configured URI")
-           {:error, :client_error, status}
-         {:ok, %{status_code: status}} when status >= 500 and status <= 500 ->
-           {:error, :server_error, status}
-         {:error, error} ->
-           {:error, :transport_error, error.reason()}
-       end
+    |> Transport.post(opts)
+    |> process_response()
+  end
+
+  defp process_response(response) do
+    case response do
+      {:ok, %{status_code: 200} = response} ->
+        {:ok, Response.process(response.body())}
+      {:ok, %{status_code: status} = response} when status >= 300 and status <= 399 ->
+        {:error, :redirected, response.headers["Location"]}
+      {:ok, %{status_code: status}} when status >= 400 and status <= 499 ->
+        Logger.error("Failed to Post Event, received 4xx response for configured URI")
+        {:error, :client_error, status}
+      {:ok, %{status_code: status}} when status >= 500 and status <= 500 ->
+        {:error, :server_error, status}
+      {:error, error} ->
+        {:error, :transport_error, error.reason()}
+    end
   end
 
   @doc """
