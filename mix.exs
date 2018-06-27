@@ -5,7 +5,7 @@ defmodule Siftsciex.MixProject do
     [
       app: :siftsciex,
       name: "Siftsciex",
-      version: "0.2.0",
+      version: "0.3.0",
       elixir: "~> 1.6",
       elixirc_paths: elixirc_paths(Mix.env),
       test_coverage: [tool: ExCoveralls],

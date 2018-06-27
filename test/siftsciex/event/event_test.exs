@@ -4,12 +4,12 @@ defmodule Siftsciex.EventTest do
   alias Siftsciex.Event
   alias Siftsciex.Event.Response
 
-  doctest Event, except: [create_account: 1,
-                          create_listing: 1,
-                          create_message: 1,
-                          update_listing: 1,
-                          update_account: 1,
-                          update_message: 1]
+  doctest Event, except: [create_account: 2,
+                          create_listing: 2,
+                          create_message: 2,
+                          update_listing: 2,
+                          update_account: 2,
+                          update_message: 2]
 
   test "create_account/1 sends a $create_account Event to Sift Science" do
     assert {:ok, %Response{}} = Event.create_account(account_data())

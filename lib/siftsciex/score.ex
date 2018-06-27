@@ -6,6 +6,16 @@ defmodule Siftsciex.Score do
 
   You will also find the `t:Siftsciex.Score.Response.t/0` struct defined in this namespace.  In the case of a successful HTTP request to the Score `API` the functions here will return a tuple with a `t:Siftsciex.Score.Response.t/0` struct as the second element.
 
+  There are five different abuse scores that Sift Science can/will return:
+
+    * _Payment Abuse_
+    * _Content Abuse_
+    * _Promotion Abuse_
+    * _Account Abuse_
+    * _Legacy_
+
+  The legacy score is more of a general assesment of the user, the others are fairly self-explainatory.  When making a request to the Score API you must specify one or more score types to return, by default `score_for/1` will request the `:legacy` score.
+
   *NOTE*: If a synchronous request is made to the Events API then a `t:Siftsciex.Score.Response.t/0` struct will be embedded in the resulting `t:Siftsciex.Event.Response.t/0` struct.
   """
 
