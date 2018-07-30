@@ -6,7 +6,7 @@ defmodule Siftsciex.Event.Content do
   import Siftsciex
 
   alias Siftsciex.Event.Payload
-  alias Siftsciex.Event.Payload.{Comment, Listing, Message, Post, Profile, Review}
+  alias Siftsciex.Event.Payload.{Listing, Message}
 
   defstruct "$type": :empty,
             "$api_key": Application.get_env(:siftsciex, :api_key),

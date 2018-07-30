@@ -41,11 +41,11 @@ defmodule Siftsciex.Decision do
     }
   end
 
-  defp process_entity(%{"entity" => entity} = body) do
+  defp process_entity(%{"entity" => entity} = _body) do
     {@entity_type[entity["type"]], entity["id"]}
   end
 
-  defp process_decision(%{"decision" => decision} = body) do
+  defp process_decision(%{"decision" => decision} = _body) do
     decision["id"]
   end
 

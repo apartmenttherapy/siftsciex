@@ -37,7 +37,6 @@ defmodule Siftsciex.Event do
   require Logger
 
   alias Siftsciex.Event.{Account, Content, Response, Transport}
-  alias Siftsciex.Score
 
   @type error_map :: %{required(String.t) => String.t}
   @type result :: {:ok, Response.t}

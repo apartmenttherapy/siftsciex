@@ -54,7 +54,7 @@ defmodule Siftsciex.Event.Response.Error do
          :empty ->
            :unknown
          status ->
-           Map.get(@error_map, response.status(), :none)
+           Map.get(@error_map, status, :none)
        end
   end
 end
