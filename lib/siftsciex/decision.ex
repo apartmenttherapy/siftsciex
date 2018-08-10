@@ -50,7 +50,7 @@ defmodule Siftsciex.Decision do
   end
 
   defp parse_time(body) do
-    {:ok, time} = DateTime.from_unix(body["time"])
+    {:ok, time} = DateTime.from_unix(body["time"], :millisecond)
 
     time
   end

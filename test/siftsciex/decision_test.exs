@@ -4,9 +4,9 @@ defmodule Siftsciex.DecisionTest do
   alias Siftsciex.Decision
 
   test "new/1 builds a valid decision" do
-    seconds = 1_528_813_580
-    {:ok, expected_time} = DateTime.from_unix(seconds)
-    result = Decision.new(%{"entity" => %{"type" => "user", "id" => "8"}, "decision" => %{"id" => "steralize"}, "time" => seconds})
+    miliseconds = 1_528_813_580_000
+    {:ok, expected_time} = DateTime.from_unix(miliseconds, :millisecond)
+    result = Decision.new(%{"entity" => %{"type" => "user", "id" => "8"}, "decision" => %{"id" => "steralize"}, "time" => miliseconds})
 
     assert %Decision{entity: {:user, "8"}, decision: "steralize", time: ^expected_time} = result
   end
