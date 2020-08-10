@@ -26,7 +26,9 @@ defmodule Siftsciex.Event.Account do
             "$billing_address": :empty,
             "$shipping_address": :empty,
             "$promotions": :empty,
-            "$social_sign_on_type": :empty
+            "$social_sign_on_type": :empty,
+            "$session_id": :empty,
+            update_status: :empty
   @type t :: %__MODULE__{"$user_email": Payload.payload_string,
                          "$user_id": Payload.payload_string,
                          "$type": Payload.payload_string,
@@ -38,12 +40,16 @@ defmodule Siftsciex.Event.Account do
                          "$billing_address": :empty | Address.t,
                          "$shipping_address": :empty | Address.t,
                          "$promotions": :empty | [Promotion.t],
-                         "$social_sign_on_type": Payload.payload_string}
+                         "$social_sign_on_type": Payload.payload_string,
+                         "$session_id": Payload.payload_string,
+                         update_status: Payload.payload_string}
   @type string_attr :: :user_email
                        | :name
                        | :phone
                        | :referrer_user_id
                        | :social_sign_on_type
+                       | :session_id
+                       | :update_status
   @type data :: %{required(:user_id) => String.t,
                   optional(string_attr) => String.t,
                   optional(:payment_methods) => [PaymentMethod.data],
@@ -70,16 +76,16 @@ defmodule Siftsciex.Event.Account do
   ## Examples
 
       iex> Account.create_account(%{user_id: "bob", user_email: "bob@example.com"})
-      %Account{"$user_email": "bob@example.com", "$user_id": "bob", "$api_key": api_key, "$type": "$create_account"}
+      %Account{"$user_email": "bob@example.com", "$user_id": "bob", "$api_key": api_key(), "$type": "$create_account"}
 
       iex> Account.create_account(%{user_email: "bob@example.com", user_id: "bob", payment_methods: [%{payment_type: :cash}]})
-      %Account{"$user_email": "bob@example.com", "$user_id": "bob", "$api_key": api_key, "$payment_methods": [%PaymentMethod{"$payment_type": "$cash"}], "$type": "$create_account"}
+      %Account{"$user_email": "bob@example.com", "$user_id": "bob", "$api_key": api_key(), "$payment_methods": [%PaymentMethod{"$payment_type": "$cash"}], "$type": "$create_account"}
 
       iex> Account.create_account(%{user_email: "bob@example.com", user_id: "bob", billing_address: %{name: "Bob", zipcode: "87102"}})
-      %Account{"$user_email": "bob@example.com", "$user_id": "bob", "$type": "$create_account", "$api_key": api_key, "$billing_address": %Address{"$name": "Bob", "$zipcode": "87102"}}
+      %Account{"$user_email": "bob@example.com", "$user_id": "bob", "$type": "$create_account", "$api_key": api_key(), "$billing_address": %Address{"$name": "Bob", "$zipcode": "87102"}}
 
       iex> Account.create_account(%{user_email: "bob@example.com", user_id: "bob", promotions: [%{promotion_id: "promo"}]})
-      %Account{"$user_email": "bob@example.com", "$user_id": "bob", "$type": "$create_account", "$api_key": api_key, "$promotions": [%Promotion{"$promotion_id": "promo"}]}
+      %Account{"$user_email": "bob@example.com", "$user_id": "bob", "$type": "$create_account", "$api_key": api_key(), "$promotions": [%Promotion{"$promotion_id": "promo"}]}
 
   """
   @spec create_account(data) :: __MODULE__.t
@@ -124,6 +130,8 @@ defmodule Siftsciex.Event.Account do
   defp normalize({:referrer_user_id, value}), do: {mark(:referrer_user_id), value}
   defp normalize({:promotions, value}), do: {mark(:promotions), Promotion.new(value)}
   defp normalize({:social_sign_on_type, value}), do: {mark(:social_sign_on_type), value}
+  defp normalize({:session_id, value}), do: {mark(:session_id), value}
+  defp normalize({:update_status, value}), do: {:update_status, value}
   defp normalize({:payment_methods, value}) do
     {mark(:payment_methods), PaymentMethod.new(value)}
   end
