@@ -43,7 +43,7 @@ defmodule Siftsciex.Event.Response.Error do
 
   ## Examples
 
-      iex> Error.error(response)
+      iex> Error.error(response())
       :rate_limited
 
   """

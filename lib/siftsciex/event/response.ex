@@ -25,8 +25,8 @@ defmodule Siftsciex.Event.Response do
 
   ## Examples
 
-      iex> Response.process(%{"status" => 0, "error_message" => "OK", "time" => time, "request" => ""})
-      %Response{status: 0, message: "OK", time: date_time, request: "", score_response: :empty}
+      iex> Response.process(%{"status" => 0, "error_message" => "OK", "time" => time(), "request" => ""})
+      %Response{status: 0, message: "OK", time: date_time(), request: "", score_response: :empty}
 
   """
   @spec process(String.t) :: __MODULE__.t
