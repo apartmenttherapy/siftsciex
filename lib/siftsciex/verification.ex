@@ -11,9 +11,6 @@ defmodule Siftsciex.Verification do
 
   @type error_map :: %{required(String.t) => String.t}
   @type result :: {:ok, Response.t}
-                  | {:error, :redirected, String.t}
-                  | {:error, :client_error, integer}
-                  | {:error, :server_error, integer}
                   | {:error, :transport_error, any}
 
 
