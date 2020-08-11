@@ -3,8 +3,6 @@ defmodule Siftsciex.Verification.Payload.Send.Event do
   Internal representation and "constructor" for a Sift Science Verficiation Send Request Event Payload
   """
 
-  alias Siftsciex.Verification.Payload.Send.Event
-
   defstruct "$verified_event": :empty
 
   @type t :: %__MODULE__{"$verified_event": Payload.payload_string}
