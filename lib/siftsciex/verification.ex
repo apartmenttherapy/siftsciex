@@ -23,7 +23,7 @@ defmodule Siftsciex.Verification do
 
   ## Examples
 
-      iex> Siftsciex.Verification.check(%{user_id: 18128799, code: "490092"})
+      iex> Siftsciex.Verification.check(%{user_id: 18128799, verified_entity_id: "793325", verified_event: "$update_account", code: "490092"})
       {:ok,
         %Siftsciex.Verification.Response.Check{
           checked_at: ~U[2020-08-07 17:56:02.720Z],
@@ -47,7 +47,7 @@ defmodule Siftsciex.Verification do
 
   ## Examples
 
-      iex(10)> Siftsciex.Verification.resend(%{user_id: "18128799"})
+      iex(10)> Siftsciex.Verification.resend(%{user_id: "18128799", verified_entity_id: "1234567890123"})
       {:ok,
       %Siftsciex.Verification.Response.Send{
         brand_name: "",
@@ -76,7 +76,7 @@ defmodule Siftsciex.Verification do
 
   ## Examples
 
-      iex(11)> Siftsciex.Verification.send(%{user_id: 18128799, send_to: "fake.email@gmail.com", verification_type: "$email", event: %{verified_event: "$update_account"}})
+      iex(11)> Siftsciex.Verification.send(%{user_id: 18128799, send_to: "fake.email@gmail.com", verification_type: "$email", event: %{verified_event: "$update_account", session_id: "1234567890123"}})
       {:ok,
       %Siftsciex.Verification.Response.Send{
         brand_name: "",
