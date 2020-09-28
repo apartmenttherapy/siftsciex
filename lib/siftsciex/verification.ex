@@ -76,7 +76,7 @@ defmodule Siftsciex.Verification do
 
   ## Examples
 
-      iex(11)> Siftsciex.Verification.send(%{user_id: 18128799, send_to: "fake.email@gmail.com", verification_type: "$email", event: %{verified_event: "$update_account", session_id: "1234567890123"}})
+      iex(11)> Siftsciex.Verification.send(%{user_id: 18128799, send_to: "fake.email@gmail.com", verification_type: "$email", event: %{verified_entity_id: "1234567890123", verified_event: "$update_account", session_id: "1234567890123"}})
       {:ok,
       %Siftsciex.Verification.Response.Send{
         brand_name: "",
