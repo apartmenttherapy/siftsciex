@@ -14,6 +14,7 @@ The following events are implemented currently:
     * `message`
   * `create_account`
   * `update_account`
+  * `login`
 
 The goal with this library is _full support_ of the Sift Science API so anything not currently supported is definitely a goal.  If there is something you are looking for sooner rather than later PRs are most welcome or feel free to open an issue and we will get to it as time permits.
 
@@ -25,7 +26,7 @@ by adding `siftsciex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:siftsciex, "~> 0.3.0"}
+    {:siftsciex, "~> 0.6.0"}
   ]
 end
 ```

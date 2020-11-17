@@ -36,7 +36,7 @@ defmodule Siftsciex.Event do
 
   require Logger
 
-  alias Siftsciex.Event.{Account, Content, Response, Transport}
+  alias Siftsciex.Event.{Account, Content, Login, Response, Transport}
 
   @type error_map :: %{required(String.t) => String.t}
   @type result :: {:ok, Response.t}
@@ -131,6 +131,31 @@ defmodule Siftsciex.Event do
     |> Account.update_account()
     |> purge_empty()
     |> post(opts)
+  end
+
+  @doc """
+  Register an `$login` Event with Sift Science
+
+  ## Parameters
+
+    - `data`: A map with all parameters that should be sent to Sift Science
+    - `options`: See the Options section in the module description.
+
+  ## Examples
+      iex> Event.login(%{user_id: "kate.austin", login_status: :success})
+      {:ok, %Siftsciex.Event.Response{}}
+
+  """
+  @spec login(map(), Keyword.t()) :: result()
+  def login(data, opts \\ []) do
+    with {:ok, login_event} <- Login.create(data) do
+      login_event
+      |> purge_empty()
+      |> post(opts)
+    else
+      {:error, error} ->
+        {:error, :client_error, error}
+    end
   end
 
   @doc """
