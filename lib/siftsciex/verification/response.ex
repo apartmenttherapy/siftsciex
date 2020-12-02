@@ -7,6 +7,8 @@ defmodule Siftsciex.Verification.Response do
 
   alias Siftsciex.Verification.Response.Check, as: CheckResponse
   alias Siftsciex.Verification.Response.Send, as: SendResponse
+  
+  @type t :: CheckResponse.t() | SendResponse.t()
 
   @doc """
   Processes the respose from Sift Science Verification requests
