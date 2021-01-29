@@ -26,7 +26,7 @@ defmodule Siftsciex.Verification.Response do
         status: 50
       }
   """
-  @spec process(String.t, String.t) :: __MODULE__.t
+  @spec process(String.t, String.t) :: CheckResponse.t() | SendResponse.t()
   def process(response_body, endpoint) when is_binary(response_body) do
     response_body
     |> Poison.decode()

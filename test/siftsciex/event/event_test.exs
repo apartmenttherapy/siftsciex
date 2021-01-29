@@ -7,6 +7,7 @@ defmodule Siftsciex.EventTest do
   doctest Event, except: [create_account: 2,
                           create_listing: 2,
                           create_message: 2,
+                          login: 2,
                           update_listing: 2,
                           update_account: 2,
                           update_message: 2]
@@ -35,6 +36,10 @@ defmodule Siftsciex.EventTest do
     assert {:ok, %Response{}} = Event.update_message(message_data())
   end
 
+  test "login/2 sends a $login to Sift Science" do
+    assert {:ok, %Response{}} = Event.login(login_data())
+  end
+
   def account_data, do: %{user_id: "bob", user_email: "bob@example.com"}
 
   def listing_data do
@@ -53,5 +58,13 @@ defmodule Siftsciex.EventTest do
     %{user_id: "bob",
       content_id: "9f2ebfb3-7dbb-456c-b263-d985f107de07",
       message: %{body: "Hello"}}
+  end
+
+  def login_data do
+    %{
+      user_id: "john.locke",
+      login_status: :success,
+      social_sign_on_type: :facebook
+    }
   end
 end
