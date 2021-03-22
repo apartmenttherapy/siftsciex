@@ -56,7 +56,7 @@ defmodule Siftsciex.Decision do
       iex> Decision.decisions_for("21123865", "user")
       {:ok, %Siftsciex.Decision.Response{decisions: %{payment_abuse: %{decision: %{id: "auto_block_payment_abuse"},time: 1613777136497,webhook_succeeded: false}}}}
   """
-  @spec decisions_for(String.t, entity_type) :: map
+  @spec decisions_for(String.t, entity_type) :: result
   def decisions_for(entity_id, entity_type) do
     account_id = Application.get_env(:siftsciex, :account_id)
 
