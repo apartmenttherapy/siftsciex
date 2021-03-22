@@ -104,7 +104,6 @@ defmodule Siftsciex.Decision do
     "#{base_url()}/#{account_id}/#{entity_type}s/#{entity_id}/decisions"
   end
 
-  # defp base_url, do: Application.get_env(:siftsciex, :score_url)
   defp base_url, do: Application.get_env(:siftsciex, :decisions_url)
 
   defp credentials, do: "#{Application.get_env(:siftsciex, :api_key)}:" |> Base.encode64()
