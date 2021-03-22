@@ -72,6 +72,10 @@ defmodule Siftsciex.Support.MockRequest do
     {:ok, %{status_code: 200, body: score_response()}}
   end
 
+  def get(_url, _headers) do
+    {:ok, %{status_code: 200, body: decision_response()}}
+  end
+
   defp score_response do
     """
     {
@@ -86,6 +90,22 @@ defmodule Siftsciex.Support.MockRequest do
               "name": "Dirty"
             }
           ]
+        }
+      }
+    }
+    """
+  end
+
+  defp decision_response do
+    """
+    {
+      "decisions": {
+        "payment_abuse": {
+          "decision": {
+            "id": "auto_block_payment_abuse"
+          },
+          "time": 1613777136497,
+          "webhook_succeeded": false
         }
       }
     }

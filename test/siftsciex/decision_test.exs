@@ -3,6 +3,8 @@ defmodule Siftsciex.DecisionTest do
 
   alias Siftsciex.Decision
 
+  doctest Decision
+
   test "new/1 builds a valid decision" do
     miliseconds = 1_528_813_580_000
     {:ok, expected_time} = DateTime.from_unix(miliseconds, :millisecond)
