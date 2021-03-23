@@ -50,18 +50,22 @@ defmodule Siftsciex.Decision do
 
     - `entity_id`: the ID of the entity you are looking to get decisions for
     - `entity_type`: The type of the entity you are looking to get decisions for (see entity_type above)
+    - `user_id`: If the entity_type is :session or :content then a user_id is required to build the request URL
 
   ## Examples
 
       iex> Decision.decisions_for("21123865", "user")
       {:ok, %Siftsciex.Decision.Response{decisions: %{payment_abuse: %{decision: %{id: "auto_block_payment_abuse"},time: 1613777136497,webhook_succeeded: false}}}}
+
+      iex> Decision.decisions_for("123456", "session", "21123865")
+      {:ok, %Siftsciex.Decision.Response{decisions: %{payment_abuse: %{decision: %{id: "session_blocked_account_takeover"},time: 1613777136497,webhook_succeeded: false}}}}
   """
   @spec decisions_for(String.t, entity_type) :: result
-  def decisions_for(entity_id, entity_type) do
+  def decisions_for(entity_id, entity_type, user_id \\ nil) do
     account_id = Application.get_env(:siftsciex, :account_id)
 
     entity_id
-    |> request_url(entity_type, account_id)
+    |> request_url(entity_type, account_id, user_id)
     |> @transport.get([{"Authorization", "Basic #{credentials()}"}])
     |> case do
          {:ok, %{status_code: 200} = response} ->
@@ -100,8 +104,18 @@ defmodule Siftsciex.Decision do
     time
   end
 
-  defp request_url(entity_id, entity_type, account_id) do
-    "#{base_url()}/#{account_id}/#{entity_type}s/#{entity_id}/decisions"
+  defp request_url(entity_id, entity_type, account_id, user_id) when is_atom(entity_type), do: request_url(entity_id, Atom.to_string(entity_type), account_id, user_id)
+  defp request_url(entity_id, entity_type, account_id, user_id) do
+    if Enum.member?(["session", "content"], entity_type) && !user_id, do: raise "Missing user_id for session or content URL"
+
+    case entity_type do
+      "session" ->
+        "#{base_url()}/#{account_id}/users/#{user_id}/sessions/#{entity_id}/decisions"
+      "content" ->
+        "#{base_url()}/#{account_id}/users/#{user_id}/content/#{entity_id}/decisions"
+      _ ->
+        "#{base_url()}/#{account_id}/#{entity_type}s/#{entity_id}/decisions"
+    end
   end
 
   defp base_url, do: Application.get_env(:siftsciex, :accounts_url)
