@@ -7,7 +7,7 @@ defmodule Siftsciex.MixProject do
       name: "Siftsciex",
       description: description(),
       package: package(),
-      version: "0.6.0",
+      version: "0.7.0",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env),
       test_coverage: [tool: ExCoveralls],
@@ -50,9 +50,9 @@ defmodule Siftsciex.MixProject do
   defp package do
     [
       licenses: ["LGPLv3"],
-      maintainers: ["Glen Holcomb"],
-      links: %{"GitHub" => "https://github.com/apartmenttherapy/siftsciex"},
-      source_url: "https://github.com/apartmenttherapy/siftsciex"
+      maintainers: ["Derek Sweet"],
+      links: %{"GitHub" => "https://github.com/TheRealReal/siftsciex"},
+      source_url: "https://github.com/TheRealReal/siftsciex"
     ]
   end
 end

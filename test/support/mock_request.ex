@@ -72,6 +72,14 @@ defmodule Siftsciex.Support.MockRequest do
     {:ok, %{status_code: 200, body: score_response()}}
   end
 
+  def get(url, _headers) do
+    if String.contains?(url, "sessions") do
+      {:ok, %{status_code: 200, body: sessions_decision_response()}}
+    else
+      {:ok, %{status_code: 200, body: decision_response()}}
+    end
+  end
+
   defp score_response do
     """
     {
@@ -86,6 +94,38 @@ defmodule Siftsciex.Support.MockRequest do
               "name": "Dirty"
             }
           ]
+        }
+      }
+    }
+    """
+  end
+
+  defp decision_response do
+    """
+    {
+      "decisions": {
+        "payment_abuse": {
+          "decision": {
+            "id": "auto_block_payment_abuse"
+          },
+          "time": 1613777136497,
+          "webhook_succeeded": false
+        }
+      }
+    }
+    """
+  end
+
+  defp sessions_decision_response do
+    """
+    {
+      "decisions": {
+        "payment_abuse": {
+          "decision": {
+            "id": "session_blocked_account_takeover"
+          },
+          "time": 1613777136497,
+          "webhook_succeeded": false
         }
       }
     }
