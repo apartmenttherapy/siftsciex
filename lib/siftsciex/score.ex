@@ -66,14 +66,14 @@ defmodule Siftsciex.Score do
        end
   end
 
-  defp request_url(user, types) do
-    uri = "#{base_url()}/#{user}"
+  defp request_url(user_id, types) do
+    uri = "#{base_url()}/#{user_id}/score"
     query = "?api_key=#{api_key()}&abuse_types=#{abuse_val(types)}"
 
     "#{uri}/#{query}"
   end
 
-  defp base_url, do: Application.get_env(:siftsciex, :score_url)
+  defp base_url, do: Application.get_env(:siftsciex, :users_url)
 
   defp api_key, do: Application.get_env(:siftsciex, :api_key)
 
