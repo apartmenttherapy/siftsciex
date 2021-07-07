@@ -104,8 +104,8 @@ defmodule Siftsciex.Verification do
 
   defp process_response(response, endpoint) do
     case response do
-      {:ok, %{status_code: _status_code} = response} ->
-        {:ok, Response.process(response.body(), endpoint)}
+      {:ok, %{status_code: _status_code, body: body}} ->
+        {:ok, Response.process(body, endpoint)}
       {:error, error} ->
         {:error, :transport_error, error.reason()}
     end
