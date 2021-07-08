@@ -26,7 +26,7 @@ defmodule Siftsciex.Event.Error do
   end
 
   @doc """
-  Parses the error response from sift events API into a struct
+  Parses the error response from Sift Events API into a struct
   """
   @spec from_body(error_types(), String.t()) :: t()
   def from_body(type, body) when is_binary(body) do
