@@ -39,11 +39,7 @@ defmodule Siftsciex.Event do
   alias Siftsciex.Event.{Account, Content, Error, Login, Response, Transport}
 
   @type error_map :: %{required(String.t) => String.t}
-  @type result :: {:ok, Response.t}
-                  | {:error, :redirected, String.t}
-                  | {:error, :client_error, integer}
-                  | {:error, :server_error, integer}
-                  | {:error, :transport_error, any}
+  @type result :: {:ok, Response.t} | {:error, Error.t}
 
   @doc """
   Reports a `create_content.listing` event to Sift Science
