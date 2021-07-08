@@ -36,14 +36,10 @@ defmodule Siftsciex.Event do
 
   require Logger
 
-  alias Siftsciex.Event.{Account, Content, Login, Response, Transport}
+  alias Siftsciex.Event.{Account, Content, Error, Login, Response, Transport}
 
   @type error_map :: %{required(String.t) => String.t}
-  @type result :: {:ok, Response.t}
-                  | {:error, :redirected, String.t}
-                  | {:error, :client_error, integer}
-                  | {:error, :server_error, integer}
-                  | {:error, :transport_error, any}
+  @type result :: {:ok, Response.t} | {:error, Error.t}
 
   @doc """
   Reports a `create_content.listing` event to Sift Science
@@ -210,17 +206,21 @@ defmodule Siftsciex.Event do
 
   defp process_response(response) do
     case response do
-      {:ok, %{status_code: 200} = response} ->
-        {:ok, Response.process(response.body())}
-      {:ok, %{status_code: status} = response} when status >= 300 and status <= 399 ->
-        {:error, :redirected, response.headers["Location"]}
-      {:ok, %{status_code: status}} when status >= 400 and status <= 499 ->
+      {:ok, %{status_code: 200, body: body}} ->
+        {:ok, Response.process(body)}
+
+      {:ok, %{status_code: status, headers: headers}} when status >= 300 and status <= 399 ->
+        {:error, Error.build(:redirected, headers["Location"])}
+
+      {:ok, %{status_code: status, body: body}} when status >= 400 and status <= 499 ->
         Logger.error("Failed to Post Event, received 4xx response for configured URI")
-        {:error, :client_error, status}
-      {:ok, %{status_code: status}} when status >= 500 and status <= 500 ->
-        {:error, :server_error, status}
-      {:error, error} ->
-        {:error, :transport_error, error.reason()}
+        {:error, Error.from_body(:client_error, body)}
+
+      {:ok, %{status_code: status, body: body}} when status >= 500 and status <= 500 ->
+        {:error, Error.from_body(:server_error, body)}
+
+      {:error, %{reason: reason}} ->
+        {:error, Error.build(:transport_error, reason)}
     end
   end
 

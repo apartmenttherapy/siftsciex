@@ -68,17 +68,21 @@ defmodule Siftsciex.Decision do
     |> request_url(entity_type, account_id, user_id)
     |> @transport.get([{"Authorization", "Basic #{credentials()}"}])
     |> case do
-         {:ok, %{status_code: 200} = response} ->
-           {:ok, Response.process(response.body())}
-         {:ok, %{status_code: status} = response} when status >= 300 and status <= 399 ->
-           {:error, :redirected, response.headers["Location"]}
+         {:ok, %{status_code: 200, body: body}} ->
+           {:ok, Response.process(body)}
+
+         {:ok, %{status_code: status, headers: headers}} when status >= 300 and status <= 399 ->
+           {:error, :redirected, headers["Location"]}
+
          {:ok, %{status_code: status}} when status >= 400 and status <= 499 ->
            Logger.error("Failed to Post Event, received 4xx response for configured URI")
            {:error, :client_error, status}
+
          {:ok, %{status_code: status}} when status >= 500 and status <= 500 ->
            {:error, :server_error, status}
-         {:error, error} ->
-           {:error, :transport_error, error.reason()}
+
+         {:error, %{reason: reason}} ->
+           {:error, :transport_error, reason}
        end
   end
 

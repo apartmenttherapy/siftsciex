@@ -3,8 +3,6 @@ defmodule Siftsciex.Score.Response.Label do
   Represents a label in a Score response (`t:Siftsciex.Score.Response.t/0`) from Sift
   """
 
-  alias Siftsciex.Score
-
   defstruct is_bad: :empty, time: :empty, description: :empty
 
   @type abuse_type :: :payment_abuse | :account_abuse | :content_abuse | :promotion_abuse
