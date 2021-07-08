@@ -6,7 +6,7 @@ defmodule Siftsciex.Event.Payload.Listing do
   import Siftsciex, except: [api_key: 0]
 
   alias Siftsciex.Event.Payload
-  alias Siftsciex.Event.Payload.{Address, Image, Item, Location}
+  alias Siftsciex.Event.Payload.{Address, Image, Item}
 
   defstruct "$subject": :empty,
             "$body": :empty,

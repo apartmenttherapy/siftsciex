@@ -5,18 +5,21 @@ defmodule Siftsciex.Score.Response do
 
   require Logger
 
-  alias Siftsciex.Score.Response.{Score, Label}
+  alias Siftsciex.Score.Response.{Score, Label, WorkflowStatus}
 
   defstruct status: :empty,
             error_message: :empty,
             user_id: :empty,
             scores: :empty,
-            latest_labels: :empty
+            latest_labels: :empty,
+            workflow_statuses: :empty
+
   @type t :: %__MODULE__{status: :empty | integer,
                          error_message: :empty | String.t,
                          user_id: :empty | String.t,
                          scores: :empty | [Score.t],
-                         latest_labels: :empty | [Label.t]}
+                         latest_labels: :empty | [Label.t],
+                         workflow_statuses: :empty | [WorkflowStatus.t]}
 
   @doc """
   Processes a response body and converts it into a `t:Siftsciex.Score.Response.t/0` struct.
@@ -39,10 +42,11 @@ defmodule Siftsciex.Score.Response do
          {:ok, response} ->
            process(response)
          {:error, reason} ->
-           Logger.error("Invalid (#{reason}) JSON response from Sift Science: #{body}")
+           Logger.error("Invalid (#{inspect(reason)}) JSON response from Sift Science: #{inspect(body)}")
            %__MODULE__{}
        end
   end
+
   def process(body) do
     __MODULE__
     |> struct(body)
@@ -53,6 +57,7 @@ defmodule Siftsciex.Score.Response do
     record
     |> convert_scores(record.scores())
     |> convert_labels(record.latest_labels())
+    |> convert_workflow_statuses(record.workflow_statuses())
   end
 
   defp convert_scores(record, :empty), do: record
@@ -69,5 +74,10 @@ defmodule Siftsciex.Score.Response do
   end
   defp convert_labels(record, labels) do
     struct(record, latest_labels: Label.new(labels))
+  end
+
+  defp convert_workflow_statuses(record, :empty), do: record
+  defp convert_workflow_statuses(record, workflow_statuses) do
+    struct(record, workflow_statuses: WorkflowStatus.new(workflow_statuses))
   end
 end

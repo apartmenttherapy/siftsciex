@@ -11,9 +11,17 @@ defmodule Siftsciex.Event.Transport do
 
     transporter().post(url(), json)
   end
+
   def post(payload, [scores: scores]) do
     {:ok, json} = Poison.encode(payload)
     query = "?return_score=true&abuse_types=#{Enum.join(scores, ",")}"
+
+    transporter().post(url() <> query, json)
+  end
+
+  def post(payload, [return_workflow_status: true]) do
+    {:ok, json} = Poison.encode(payload)
+    query = "?return_workflow_status=true"
 
     transporter().post(url() <> query, json)
   end

@@ -5,8 +5,8 @@ defmodule Siftsciex.Score.Response.LabelTest do
 
   doctest Label, except: [new: 1]
 
-  test "new/1 returns a label struct" do
-    expected = %Label{type: :payment_abuse, is_bad: true, time: expected_time(), description: "Fake card"}
+  test "new/1 returns a label map" do
+    expected = %{payment_abuse: %Label{is_bad: true, time: expected_time(), description: "Fake card"}}
 
     assert ^expected = Label.new(%{payment_abuse: %{is_bad: true, time: 1_529_011_047, description: "Fake card"}})
   end
