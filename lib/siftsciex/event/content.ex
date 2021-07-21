@@ -9,7 +9,7 @@ defmodule Siftsciex.Event.Content do
   alias Siftsciex.Event.Payload.{Listing, Message}
 
   defstruct "$type": :empty,
-            "$api_key": Application.get_env(:siftsciex, :api_key),
+            "$api_key": :empty,
             "$user_id": :empty,
             "$content_id": :empty,
             "$account_type": :empty,
@@ -135,7 +135,9 @@ defmodule Siftsciex.Event.Content do
 
   defp populate_context(record, %{user_id: user, content_id: content} = data) do
     record
-    |> struct(["$user_id": user,
+    |> struct([
+               "$api_key": api_key(),
+               "$user_id": user,
                "$content_id": content,
                "$ip": lookup(data, :ip),
                "$session_id": lookup(data, :session_id),

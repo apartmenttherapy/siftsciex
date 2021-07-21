@@ -8,7 +8,7 @@ defmodule Siftsciex.Event.Login do
   alias Siftsciex.Event.Payload.{App, Browser}
 
   defstruct "$type": "$login",
-            "$api_key": api_key(),
+            "$api_key": :empty,
             "$user_id": :empty,
             "$session_id": :empty,
             "$login_status": :empty,
@@ -116,7 +116,7 @@ defmodule Siftsciex.Event.Login do
   ## Examples
 
       iex> Siftsciex.Event.Login.create(%{user_id: "jack.shephard", login_status: :success})
-      {:ok, %Siftsciex.Event.Login{"$type": "$login", "$user_id": "jack.shephard", "$login_status": "$success"}}
+      {:ok, %Siftsciex.Event.Login{"$api_key": "test_key", "$type": "$login", "$user_id": "jack.shephard", "$login_status": "$success"}}
 
       iex> Siftsciex.Event.Login.create(%{user_id: "jack.shephard", failure_reason: :bad_arg})
       {:error, "invalid failure_reason: bad_arg"}
@@ -139,7 +139,12 @@ defmodule Siftsciex.Event.Login do
 
     case normalized do
       %{} = _normalized ->
-        {:ok, struct(__MODULE__, normalized)}
+        value =
+          __MODULE__
+        |> struct(normalized)
+        |> struct("$api_key": api_key())
+
+        {:ok,value}
 
       {:error, error} ->
         {:error, error}

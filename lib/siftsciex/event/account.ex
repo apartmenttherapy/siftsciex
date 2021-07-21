@@ -17,7 +17,7 @@ defmodule Siftsciex.Event.Account do
 
   defstruct "$user_email": :empty,
             "$user_id": :empty,
-            "$api_key": Application.get_env(:siftsciex, :api_key),
+            "$api_key": :empty,
             "$type": :empty,
             "$name": :empty,
             "$phone": :empty,
@@ -94,6 +94,7 @@ defmodule Siftsciex.Event.Account do
 
     create()
     |> struct(normalized)
+    |> struct("$api_key": api_key())
   end
 
   @doc """
@@ -106,10 +107,10 @@ defmodule Siftsciex.Event.Account do
   ## Examples
 
       iex> Account.update_account(%{user_id: "bob", user_email: "bob@example.com"})
-      %Account{"$user_email": "bob@example.com", "$user_id": "bob", "$type": "$update_account"}
+      %Account{"$api_key": "test_key", "$user_email": "bob@example.com", "$user_id": "bob", "$type": "$update_account"}
 
       iex> Account.update_account(%{user_id: "bob", payment_methods: [%{payment_type: :cash}]})
-      %Account{"$user_id": "bob", "$type": "$update_account", "$payment_methods": [%PaymentMethod{"$payment_type": "$cash"}]}
+      %Account{"$api_key": "test_key", "$user_id": "bob", "$type": "$update_account", "$payment_methods": [%PaymentMethod{"$payment_type": "$cash"}]}
 
   """
   @spec update_account(data) :: __MODULE__.t
@@ -118,6 +119,7 @@ defmodule Siftsciex.Event.Account do
 
     update()
     |> struct(normalized)
+    |> struct("$api_key": api_key())
   end
 
   defp create, do: %__MODULE__{"$type": "$create_account"}
