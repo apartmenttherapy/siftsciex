@@ -14,6 +14,7 @@ The following events are implemented currently:
     * `message`
   * `create_account`
   * `update_account`
+  * `login`
 
 The goal with this library is _full support_ of the Sift Science API so anything not currently supported is definitely a goal.  If there is something you are looking for sooner rather than later PRs are most welcome or feel free to open an issue and we will get to it as time permits.
 
@@ -25,7 +26,7 @@ by adding `siftsciex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:siftsciex, "~> 0.3.0"}
+    {:siftsciex, "~> 0.6.0"}
   ]
 end
 ```
@@ -52,3 +53,15 @@ Scores represent the level of Risk a user represents in several different catego
   * `promotion_abuse`
 
 When making a query to the Score API you can indicate which of these scores you wish returned for the user.  There is some other metadata that comes across with a Score you can read more about that [here](https://siftscience.com/developers/docs/curl/score-api/synchronous-scores).  A Score can be requested independently at any time or it can be requested in the response to reporting an Event.
+
+### Verification
+
+The Sift Verification Product sends users 2FA codes to their emails (delivery mechanisms other than email may be available by the time you are reading this), and allows you to associate the issuance of those codes with events like $login and $update_account.
+
+Here is the integration document for the Sift Verification Product: [Sift Verification Integration Guide](https://docs.google.com/document/d/11RK_oss2Z7TjydnugYHlG5tK41GMpCyfbNbjzZAYSfM/edit)
+
+You can use Siftsciex to perform the folllowing functions with the Sift Verification Product:
+
+- [Send](https://docs.google.com/document/d/11RK_oss2Z7TjydnugYHlG5tK41GMpCyfbNbjzZAYSfM/edit#heading=h.3cq95acvc6qz)
+- [Resend](https://docs.google.com/document/d/11RK_oss2Z7TjydnugYHlG5tK41GMpCyfbNbjzZAYSfM/edit#heading=h.eiigouvojhvn)
+- [Check](https://docs.google.com/document/d/11RK_oss2Z7TjydnugYHlG5tK41GMpCyfbNbjzZAYSfM/edit#heading=h.sx9ld6mornvm)

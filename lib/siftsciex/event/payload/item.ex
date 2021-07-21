@@ -100,9 +100,8 @@ defmodule Siftsciex.Event.Payload.Item do
   defp normalize({:price, value}), do: {String.to_atom("$price"), value}
   defp normalize({:size, value}), do: {String.to_atom("$size"), value}
 
-  defp convert_price(%{price: price} = data) do
-    data
-    |> Map.put(:price, Currency.as_micros(price, data.currency_code()))
+  defp convert_price(%{price: price, currency_code: currency_code} = data) do
+     Map.put(data, :price, Currency.as_micros(price, currency_code))
   end
   defp convert_price(data), do: data
 end
